@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "lobster-media-dev-20190530153248-authRole",
+            "UnauthRoleArn": "arn:aws:iam::643113742590:role/lobster-media-dev-20190530153248-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::643113742590:role/lobster-media-dev-20190530153248-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "lobster-media-dev-20190530153248-deployment",
+            "UnauthRoleName": "lobster-media-dev-20190530153248-unauthRole",
+            "StackName": "lobster-media-dev-20190530153248",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:643113742590:stack/lobster-media-dev-20190530153248/82679a30-82b5-11e9-a504-06d8b68f4590"
+        }
+    }
+}
