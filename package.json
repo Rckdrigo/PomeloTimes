@@ -1,7 +1,8 @@
 {
     "name": "aurora-framework",
     "version": "0.1.0",
-    "private": true,
+    "private": true, 
+    "author": "Eibiz Co. Ltd",
     "dependencies": {
         "axios": "^0.19.0",
         "babel-jest": "^24.8.0",
@@ -19,7 +20,10 @@
         "test": "jest",
 
         "api:init" : "bash scripts/api.init.sh",
-        "api:create" : "bash scripts/api.create.sh"
+        "api:create" : "bash scripts/api.create.sh",
+        "api:pack" : "bash scripts/api.pack.sh",
+        "api:deploy" : "bash scripts/api.deploy.sh",
+        "api:remove" : "bash scripts/api.remove.sh"
     },
     "eslintConfig": {
         "extends": "react-app"

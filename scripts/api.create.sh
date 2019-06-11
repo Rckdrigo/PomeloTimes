@@ -9,7 +9,7 @@ if [ "$1" != "" ]; then
    if [ ! -d ./server/$1 ]; then   
 
         cd ./server
-        serverless create --template aws-nodejs --path $1
+        serverless create --template aws-nodejs --path $1 --name $1
         
         cd $1
         mkdir test
@@ -23,7 +23,7 @@ if [ "$1" != "" ]; then
     fi
 
 else
-    echo -e "\nYou need to put a name to the API. Example: 'npm run create:api user-managment'"
+    echo -e "\nYou need to put a name to the API. Example: 'npm run api:create user-managment'"
 fi
 
 echo -e "\nFinished."
