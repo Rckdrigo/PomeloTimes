@@ -1,63 +1,28 @@
 service: user-managment # NOTE: update this with your service name
 
+custom: 
+  PATH: ./config.json
+  PROJECT: ${file(${self:custom.PATH}):project}
+
 provider:
   name: aws
   runtime: nodejs8.10
 
-  custom: 
-    config: "./config/config"
-    projectName: ${file(./config/config.${self:provider.stage}.json):project}
-
-
   stage: ${opt:stage, 'dev'}
-  region: ${file(${self:custom.config}.${self:provider.stage}.json):region, 'ap-southeast-1'}
-  profile: ${file(${self:custom.config}.${self:provider.stage}.json):profile, 'default'}
+  region: ${file(${self:custom.PATH}):region, 'ap-southeast-1'}
+  profile: ${file(${self:custom.PATH}):profile, 'default'}
 
-  logRetentionInDays: ${file(${self:custom.config}.${self:provider.stage}.json):logRetentionInDays , 90}
-  memorySize: ${file(${self:custom.config}.${self:provider.stage}.json):memorySize, 128}
-  timeout: ${file(${self:custom.config}.${self:provider.stage}.json):timeout, 6}
+  logRetentionInDays: ${file(${self:custom.PATH}):logRetentionInDays , 90}
+  memorySize: ${file(${self:custom.PATH}):memorySize, 128}
+  timeout: ${file(${self:custom.PATH}):timeout}
   
-  stackName: ${self:custom.projectName}-stack
-  apiName: ${self:custom.projectName}-api
+  stackName: ${self:custom.PROJECT}-stack
+  apiName: ${self:custom.PROJECT}-api
   deploymentBucket:
-    name: ${self:custom.projectName}-deployment-bucket
+    name: ${self:custom.PROJECT}-deployment-bucket
 
 functions:
   hello:
     handler: handler.hello
     events:
       - http: get ${self:service}/hello
-
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2

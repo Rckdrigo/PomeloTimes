@@ -1,7 +1,0 @@
-{
-    "project": "aurora",
-    "region": "ap-southeast-1",
-    "logRetentionInDays": 90,
-    "memorySize" : 128,
-    "timeout" : 6
-}

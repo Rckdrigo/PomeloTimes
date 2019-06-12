@@ -1,0 +1,14 @@
+Service Information
+service: user-managment
+stage: test
+region: ap-southeast-1
+stack: aurora-stack
+resources: 10
+api keys:
+  None
+endpoints:
+  GET - https://0beer38z79.execute-api.ap-southeast-1.amazonaws.com/test/user-managment/hello
+functions:
+  hello: user-managment-test-hello
+layers:
+  None

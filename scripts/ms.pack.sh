@@ -1,4 +1,6 @@
+#!/usr/bin/env bash
 # filename: api.pack.sh
+
 echo "--Packing serverless API --"
 
 if [ "$1" != "" ]; then

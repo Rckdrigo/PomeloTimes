@@ -19,11 +19,13 @@
         "eject": "react-scripts eject",
         "test": "jest",
 
-        "api:init" : "bash scripts/api.init.sh",
-        "api:create" : "bash scripts/api.create.sh",
-        "api:pack" : "bash scripts/api.pack.sh",
-        "api:deploy" : "bash scripts/api.deploy.sh",
-        "api:remove" : "bash scripts/api.remove.sh"
+        "aws:init" : "bash scripts/aws.init.sh",
+
+        "ms:create" : "bash scripts/ms.create.sh",
+        "ms:deploy" : "bash scripts/ms.deploy.sh",
+
+        "ms:pack" : "bash scripts/ms.pack.sh",
+        "ms:remove" : "bash scripts/ms.remove.sh"
     },
     "eslintConfig": {
         "extends": "react-app"
