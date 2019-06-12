@@ -1,8 +1,0 @@
-{
-    "project": "aurora",
-    "region": "ap-southeast-1",
-    "stage": "prod",
-    "logRetentionInDays": 90,
-    "memorySize" : 128,
-    "timeout" : 6
-}

@@ -3,21 +3,24 @@ service: user-managment # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
-  custom: ${file(./config.json)}
 
-  stackName: ${file(./config.json):project}-stack
-  # -${file(./config.json):stage}
-  apiName: ${file(./config.json):project}-api
+  custom: 
+    config: "./config/config"
+    projectName: ${file(./config/config.${self:provider.stage}.json):project}
 
-  region: ${file(./config.json):region}
-  stage: ${file(./config.json):stage}
 
-  logRetentionInDays: ${file(./config.json):logRetentionInDays}
-  memorySize: ${file(./config.json):memorySize}
-  timeout: ${file(./config.json):timeout}
+  stage: ${opt:stage, 'dev'}
+  region: ${file(${self:custom.config}.${self:provider.stage}.json):region, 'ap-southeast-1'}
+  profile: ${file(${self:custom.config}.${self:provider.stage}.json):profile, 'default'}
 
+  logRetentionInDays: ${file(${self:custom.config}.${self:provider.stage}.json):logRetentionInDays , 90}
+  memorySize: ${file(${self:custom.config}.${self:provider.stage}.json):memorySize, 128}
+  timeout: ${file(${self:custom.config}.${self:provider.stage}.json):timeout, 6}
+  
+  stackName: ${self:custom.projectName}-stack
+  apiName: ${self:custom.projectName}-api
   deploymentBucket:
-    name: ${file(./config.json):project}-deployment-bucket
+    name: ${self:custom.projectName}-deployment-bucket
 
 functions:
   hello:
