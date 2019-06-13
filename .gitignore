@@ -5,4 +5,12 @@ jspm_packages
 # Serverless directories
 .serverless
 
-coverage
+coverage/*
+
+src/*
+
+server/*
+
+logs/*
+
+public/*
