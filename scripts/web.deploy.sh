@@ -26,7 +26,7 @@ if [ "$1" != "" ]; then
             react-scripts build
             # echo "$1.$DOMAIN"
             aws s3 cp --recursive ./build s3://$1.$DOMAIN > logs/build.test
-            echo "Deployed to: http://test.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
+            # echo "Deployed to: http://test.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
             ;;
 
         prod)
@@ -36,7 +36,7 @@ if [ "$1" != "" ]; then
             react-scripts build
             # echo "$1.$DOMAIN"
             aws s3 cp --recursive ./build s3://$1.$DOMAIN > logs/build.prod
-            echo "Deployed to: http://prod.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
+            # echo "Deployed to: http://prod.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
             ;;
 
         *)
