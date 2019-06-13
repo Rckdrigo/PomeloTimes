@@ -1,15 +1,12 @@
 <!doctype html>
+
 <head>
-  <title>Cross Storage Hub</title>
+    <title>Cross Storage Hub</title>
 </head>
+
 <body>
-  <script type="text/javascript" src="./hub.js"></script>
-  <script>
-    // Limit requests to any client running on .localhost:300x
-    CrossStorageHub.init([
-      {origin: /.*192.168.1.128:300\d$/, allow: ['get', 'set', 'del']},
-      {origin: /.*192.168.1.128:3006$/, allow: ['get']}
-    ]);
-  </script>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script type="text/javascript" src="./hub.js"></script>
 </body>
+
 </html>

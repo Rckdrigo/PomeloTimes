@@ -1,7 +1,7 @@
 {
     "name": "aurora-framework",
     "version": "0.1.0",
-    "private": true, 
+    "private": true,
     "author": "Eibiz Co. Ltd",
     "dependencies": {
         "axios": "^0.19.0",
@@ -15,17 +15,15 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "jest && react-scripts build",
+        "build": "react-scripts build",
         "eject": "react-scripts eject",
         "test": "jest",
-
-        "aws:init" : "bash scripts/aws.init.sh",
-
-        "ms:create" : "bash scripts/ms.create.sh",
-        "ms:deploy" : "bash scripts/ms.deploy.sh",
-
-        "ms:pack" : "bash scripts/ms.pack.sh",
-        "ms:remove" : "bash scripts/ms.remove.sh"
+        "aws:init": "bash scripts/aws.init.sh",
+        "ms:create": "bash scripts/ms.create.sh",
+        "ms:deploy": "bash scripts/ms.deploy.sh",
+        "ms:pack": "bash scripts/ms.pack.sh",
+        "ms:remove": "bash scripts/ms.remove.sh",
+        "web:deploy": "bash scripts/web.deploy.sh"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -43,10 +41,9 @@
         ]
     },
     "devDependencies": {
-        "jest": "^24.7.0",
-        "react-test-renderer": "^16.8.6",
         "@babel/core": "*",
         "@babel/preset-env": "*",
-        "@babel/preset-react": "*"
+        "@babel/preset-react": "*",
+        "react-test-renderer": "^16.8.6"
     }
 }
