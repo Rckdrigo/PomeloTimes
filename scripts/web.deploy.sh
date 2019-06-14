@@ -2,46 +2,60 @@
 
 # filename: web.deploy.sh
 
-usage () {
-    echo -e "\nYou need to put a name to the envorinment. Example: 'npm run web:deploy [test | prod]'"
+usage () { 
+    error_exit "You need to put a name to the environment.\nExample: 'npm run web:deploy [test | prod]'" 
 }
 
-update () {
-    npm i -f
-    npm update
-    npm audit fix
+error_exit(){
+	echo -e "\n$1"
+	exit 0
 }
 
-publish() {
+get_domain(){
     DOMAIN=$(grep DOMAIN .env | cut -d '=' -f2)
 }
 
+deploy () {  
+    if jest src --passWithNoTests; then
+        echo -e "--Deploying web to $1--"
+        echo "Test passed."
+
+        # get_domain  
+        react-scripts build
+        aws s3 cp --recursive ./build s3://$1.$2
+        
+    else 
+        error_exit "Test failed. Canceling build."
+    fi
+}
 
 if [ "$1" != "" ]; then
     case "$1" in
-        test)
-            echo -e "--Deploying web to $1--"
-            # update
-            publish
-            react-scripts build
-            # echo "$1.$DOMAIN"
-            aws s3 cp --recursive ./build s3://$1.$DOMAIN > logs/build.test
-            # echo "Deployed to: http://test.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
-            ;;
+        test | prod)
+            get_domain
+            if "$DOMAIN" == ""; then
+                error_exit "You need a DOMAIN in the .env file."
+            fi
 
-        prod)
-            echo -e "--Deploying web to $1--"
-            # update
-            publish
-            react-scripts build
-            # echo "$1.$DOMAIN"
-            aws s3 cp --recursive ./build s3://$1.$DOMAIN > logs/build.prod
-            # echo "Deployed to: http://prod.aurora-media.net.s3-website-ap-southeast-1.amazonaws.com/"
+            echo -e "\n--Deploying to $1.$DOMAIN bucket"
+
+            for opt in $@
+            do
+                case "$opt" in
+                    u | update)
+                        echo "Updating libraries."
+                        npm i -f
+                        npm update
+                        npm audit fix
+                        ;;
+                esac
+            done
+
+            deploy "$1" "$DOMAIN"
             ;;
 
         *)
             usage
-            exit
             ;;
     esac
 
@@ -49,33 +63,4 @@ else
     usage
 fi
 
-echo -e "\nFinished."
-
-
-
-
-# echo -e "\n\nInstalling and updating node libraries... \n"
-# npm i -f
-# npm update
-# npm audit fix
-
-# echo "Replacing config & API file..."
-# cp src/config/config.json src/config/config.dev.json 
-# cp src/config/config.test.json src/config/config.json
-
-# cp src/api/api.json src/api/api.dev.json 
-# cp src/api/api.test.json src/api/api.json
-
-# echo -e "\nBuilding react app.."
-# react-scripts build
-
-# echo -e "\nUploading to s3 bucket.."
-# aws s3 cp --recursive ./build s3://android-imedia-frontend-test
-
-# echo -e "\nUploaded to: http://android-imedia-frontend-test.s3-website-ap-southeast-1.amazonaws.com/"
-
-# echo -e "\n\nRollback to dev..."
-# cp src/config/config.dev.json src/config/config.json 
-# cp src/api/api.dev.json src/api/api.json 
-
-# echo -e "\nTest version uploaded."
+echo -e "\nFinished uploading."
