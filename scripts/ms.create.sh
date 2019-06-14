@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
+
 # filename: api.create.sh
+
+
 error_exit(){
 	echo -e "\n$1"
 	exit 0
@@ -16,11 +19,11 @@ if [ "$1" != "" ]; then
     echo -e "\n"
     
    if [ ! -d ./server/$1 ]; then   
-        get_project
 
-        if "$PROJECT" == ""; then
-            error_exit "You need a PROJECT in the .env file."
-        fi 
+        get_project
+        if [ "$PROJECT" = "" ]; then
+            error_exit "You need a DOMAIN in the .env file."
+        fi
 
         cd ./server
 

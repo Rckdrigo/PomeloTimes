@@ -20,7 +20,6 @@ deploy () {
         echo -e "--Deploying web to $1--"
         echo "Test passed."
 
-        # get_domain  
         react-scripts build
         aws s3 cp --recursive ./build s3://$1.$2
         
@@ -33,7 +32,7 @@ if [ "$1" != "" ]; then
     case "$1" in
         test | prod)
             get_domain
-            if "$DOMAIN" == ""; then
+            if [ "$DOMAIN" = "" ]; then
                 error_exit "You need a DOMAIN in the .env file."
             fi
 
