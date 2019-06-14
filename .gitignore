@@ -7,10 +7,4 @@ jspm_packages
 
 coverage/*
 
-src/*
-
-server/*
-
 logs/*
-
-public/*
