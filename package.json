@@ -12,7 +12,7 @@
         "react-dom": "^16.8.6",
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
-        "react-scripts": "3.0.1",
+        "react-scripts": "^3.0.1",
         "serverless-mysql": "^1.4.0"
     },
     "scripts": {
@@ -48,7 +48,6 @@
         "@babel/core": "*",
         "@babel/preset-env": "*",
         "@babel/preset-react": "*",
-        "react-test-renderer": "^16.8.6",
         "serverless-offline": "^5.3.3"
     }
 }

@@ -12,6 +12,7 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <h1>Welcome to Aurora!</h1>
+                    <h1>Hi</h1>
                     <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/>
                 </header>
             </div>
