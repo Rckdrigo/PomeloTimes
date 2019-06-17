@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+import 'antd/dist/antd.css';
+import Signin from './components/signin.js'
+import Dashboard from './components/dashBoard/dashboard.js';
 
-import CookieReader from './CookieReader'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import './App.css';
 
@@ -9,12 +11,14 @@ class App extends Component {
 
     render = () => {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1>Welcome to Aurora!</h1>
-                    <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/>
-                </header>
-            </div>
+            <BrowserRouter>
+                <div className="App">
+                    <Switch>
+                        <Route path="/" component={Signin} />
+                        <Route path="/dashboard" component={Dashboard} />
+                    </Switch>
+                </div>
+            </BrowserRouter>
         );
     }
 }

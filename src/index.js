@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+//import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Main from './components/main/main';
 
 var CrossStorageClient = require('cross-storage').CrossStorageClient;
 var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
@@ -22,7 +23,7 @@ async function loadCookie(key) {
 }
 
 
-ReactDOM.render(<App saveCookie={saveCookie} loadCookie={loadCookie} />, document.getElementById('root'));
+ReactDOM.render(<Main saveCookie={saveCookie} loadCookie={loadCookie} />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
