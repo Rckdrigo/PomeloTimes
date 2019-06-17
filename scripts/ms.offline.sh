@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-# filename: ms.pack.sh
+# filename: ms.offline.sh
 
-echo "--Packing serverless API --"
+echo "--Offline serverless API --"
 
 if [ "$1" != "" ]; then
     echo -e "\n"
     
-   if [ -d ./server/$1 ]; then   
-
+    if [ -d ./server/$1 ]; then    
         cd ./server/$1
-        serverless package
+        if [ $2 = ""]; then
+            sls offline
+        else
+            sls offline --port $2
+        fi
 
     else
         echo -e "API does not exists."

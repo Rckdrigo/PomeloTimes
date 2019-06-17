@@ -18,6 +18,23 @@ deploy () {
     fi
 }
 
+for opt in $@
+    do
+        case "$opt" in
+            h | help)
+                echo -e "--Deploys a micro-service (ms) to the desired environment (default: dev). 
+
+If you don't write down the environment name, it will deploy the specific function. For production and test all the unit tests have to pass.
+
+'u' and 'update' is for updating the libraries.
+
+Cannot name a function as 'h' or 'help' as it is a reserved word"
+                exit 0
+                ;;
+        esac
+    done
+
+
 echo "--Deploy serverless API --"
 echo -n "CAUTION: Please do not cancel this process."
 
@@ -50,6 +67,7 @@ if [ "$1" != "" ]; then
                 deploy $1 $2
                 ;;
             *) 
+                
                 echo -e "\nDeploy function $2 to dev stage"
                 sls deploy -f $2 -v --stage dev
                 ;; 
