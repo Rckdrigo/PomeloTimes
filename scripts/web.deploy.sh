@@ -21,7 +21,12 @@ deploy () {
         echo "Test passed."
 
         react-scripts build
-        aws s3 cp --recursive ./build s3://$1.$2
+        if [ "$1" = "test" ]; then
+            aws s3 cp --recursive ./build s3://$1.$2
+        else
+            aws s3 cp --recursive ./build s3://$2
+        fi
+        
         
     else 
         error_exit "Test failed. Canceling build."
