@@ -1,43 +1,84 @@
 #!/usr/bin/env bash
 # filename: api.deploy.sh
 
+error_exit(){
+	echo -e "\n$1"
+	exit 0
+}
+
+deploy () {  
+    if jest server/$1 --passWithNoTests; then
+        echo "Test passed."
+
+        sls deploy -v --stage $2
+        sls info --stage $2 > info.$2.yml
+        
+    else 
+        error_exit "Test failed. Canceling build."
+    fi
+}
+
+for opt in $@
+    do
+        case "$opt" in
+            h | help)
+                echo -e "--Deploys a micro-service (ms) to the desired environment (default: dev). 
+
+If you don't write down the environment name, it will deploy the specific function. For production and test all the unit tests have to pass.
+
+'u' and 'update' is for updating the libraries.
+
+Cannot name a function as 'h' or 'help' as it is a reserved word"
+                exit 0
+                ;;
+        esac
+    done
+
+
 echo "--Deploy serverless API --"
 echo -n "CAUTION: Please do not cancel this process."
 
 if [ "$1" != "" ]; then
-    echo -e "\n"
     
    if [ -d ./server/$1 ]; then   
         cd server/$1
 
         case "$2" in
             "" | dev)
-                echo "Deploying to dev stage..."
+                echo -e "\nDeploying to dev stage..."
                 sls deploy -v --stage dev
                 sls info --stage dev > info.dev.yml
                 ;;
-            test)
-                echo -e "\nDeploying all to test stage..."
-                sls deploy -v --stage test
-                sls info --stage test > info.test.yml
-                ;;
-            prod)
-                echo -e "\nDeploying all to prod stage..."
-                sls deploy -v --stage prod
-                sls info --stage prod > info.prod.yml
+            test | prod)
+                echo -e "\nDeploying all to $2 stage..."
+
+                for opt in $@
+                do
+                    case "$opt" in
+                        u | update)
+                            echo "Updating libraries."
+                            npm i -f
+                            npm update
+                            npm audit fix
+                            ;;
+                    esac
+                done
+
+                deploy $1 $2
                 ;;
             *) 
-                echo "Deploy function $2 to dev stage"
+                
+                echo -e "\nDeploy function $2 to dev stage"
                 sls deploy -f $2 -v --stage dev
                 ;; 
         esac
         
     else
-        echo -e "API does not exists."
+        error_exit "\nAPI does not exists."
     fi
 
 else
-    echo -e "\nYou need to put a name to the API. Example: 'npm run api:pack user-managment'"
+    error_exit "\nYou need to put a name to the API. Example: 'npm run api:pack user-managment'"
 fi
 
 echo -e "\nFinished."

@@ -1,4 +1,4 @@
-service: userManagement # NOTE: update this with your service name
+service: UserManagment # NOTE: update this with your service name
 
 custom: 
   PATH: ./config.json
@@ -60,5 +60,7 @@ functions:
           #   type: COGNITO_USER_POOLS # TOKEN or COGNITO_USER_POOLS, same as AWS Cloudformation documentation
           #   authorizerId: r5j1jv
 
+plugins:
+  - serverless-offline
 
           

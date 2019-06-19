@@ -13,6 +13,8 @@ var saveCookie = (key, value) => {
     storage.onConnect().then(setKey).catch(e => {throw e});
 }
 
+
+
 async function loadCookie(key) {
     var getKey = function () { return storage.get(key); };
     var value;

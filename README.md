@@ -1,68 +1,37 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aurora framework 
 
 ## Available Scripts
 
-In the project directory, you can run:
+### `npm run aws:init`
+Initializes amazon web services and installs the libraries. 
 
-### `npm start`
+Be sure to have [aws-cli](https://aws.amazon.com/cli/) installed in your computer. You need to have python and pip installed to in order for aws-cli to work.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Have your access key and secret key nearby as you will need them for this process. If ypu dont have them, please contact the admin.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Type down `ap-southeast-1` as the default region.
 
-### `npm test`
+### `npm run ms:create [ name of microservice ]`
+Creates a micro-service (ms). This will create a serverless configuration file, a test folder with a template and a configuration file.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `npm run ms:deploy [ name of microservice ] [ dev | test | prod | function name ] [ u ]`
+Deploys a micro-service (ms) to the desired environment (default: dev). 
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+If you don't write down the environment name, it will deploy the specific function. For production and test all the unit tests have to pass.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+U is for updating the libraries.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### `npm run ms:remove [ name of microservice ] [ dev | test | prod ]`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `npm run ms:offline [ name of microservice ] [ PORT ]`
+Deploys a micro-service (ms) in the localserver. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+If you don't write down the environment name, it will deploy the specific function. For production and test all the unit tests have to pass.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+U is for updating the libraries.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### `npm run web:deploy [ name of microservice ] [ test | prod ] [ u ]`

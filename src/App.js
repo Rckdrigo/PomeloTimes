@@ -23,4 +23,5 @@ class App extends Component {
     }
 }
 
+{/* <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/> */}
 export default App;
