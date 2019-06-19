@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Main from './components/main/main';
+import Signin from './components/signin';
 
 // var CrossStorageClient = require('cross-storage').CrossStorageClient;
 // var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
@@ -15,14 +15,7 @@ import Main from './components/main/main';
 
 
 
-// async function loadCookie(key) {
-//     var getKey = function () { return storage.get(key); };
-//     var value;
-//     await storage.onConnect().then(getKey)
-//         .then(e=>value=e)
-//         .catch(e => {throw e});
-//     return value;
-// }
+ReactDOM.render(<Signin saveCookie={saveCookie} loadCookie={loadCookie} />, document.getElementById('root'));
 
 fetch("http://localhost:3000/user_manager/getUsers").then(e => console.log(e))
 
