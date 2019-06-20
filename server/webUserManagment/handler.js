@@ -36,10 +36,9 @@ module.exports.get = async (event, context) => {
         .catch(e => {throw(e)})
 
     return {
-        event,
         headers,
         statusCode: 200,
-        body: JSON.stringify(response[0])
+        response: response[0]
     };
 }
 

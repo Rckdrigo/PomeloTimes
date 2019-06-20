@@ -37,7 +37,7 @@ provider:
 
 functions:
   webUser:
-    handler: webUser.get
+    handler: handler.get
     events:
       - http:
           path: ${self:service}/get/{username}
