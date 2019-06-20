@@ -58,7 +58,7 @@ module.exports.webUser = async (event, context) => {
                 .catch(e => { throw (e) })
             return {
                 headers,
-                r : concatProductRoles(productRoles),
+                // r : concatProductRoles(productRoles),
                 statusCode: 200,
                 response: response[0]
             };
