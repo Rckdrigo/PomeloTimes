@@ -1,35 +1,108 @@
 import React, {Component} from 'react';
-import 'antd/dist/antd.css';
-//import { Link} from 'react-router-dom';
-import { Input, Tooltip, Icon, Col, Row } from 'antd';
-
+import { Form, Button, Col, Row } from 'react-bootstrap'
+import './signin.css';
+import { setIDToken, setRememberMe, setIDUser } from '../actions/sessionActions';
+import { connect } from 'react-redux';
 
 class Signin extends Component{
+
+    state = {
+        error: false,
+        showPassword: false,
+        show: false,
+        Password: "",
+        ConfirmPassword: "",
+        save: false,
+        require: "",
+        usernameValue: "",
+        passwordValue: ""
+    }
+
+    getUsername = () => {
+
+    }
+    getPassword = () => {
+
+    }
+    rememberMe = () => {
+
+    }
+    login = (e) => {
+        e.preventDefault();
+        this.props.history.push("/dashboard");
+    }
+    forgotPassword = () => {
+
+    }
+
     render = () => {
         return (
-        <div>
-            <Row>
-                <Col xs={2} sm={4} md={6} lg={18}>
-                    <h1>AURORA</h1>
-                    <p>Framework 0.1</p>
-                </Col>
-                <Col xs={2} sm={4} md={8} lg={6}>
-                    
-                <Input
-                    placeholder="Enter your username"
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    suffix={
-                    <Tooltip title="Extra information">
-                        <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-                    </Tooltip>
-                    }
-                />
-                </Col>
-            </Row>
-        </div>
+        <div id="body-login">
+                <div id="login-background" />
+                <div id="login-form">
+
+                    <Form id='login-inputForm'>
+                        <Form.Label id="login-title">SIGN IN TO AURORA</Form.Label>
+                        <br />
+                        <Form.Group className="login-inputbox">
+                            <Form.Control type="text"
+                                placeholder="Username"
+                                ref={ref => this.usernameInput = ref}
+                                id="username"
+                                onChange={this.getUsername}
+                                value={this.state.usernameValue} />
+                        </Form.Group>
+
+                        <Form.Group className="login-inputbox">
+                            <Form.Control type="password"
+                                        placeholder="Password"
+                                        ref={ref => this.passwordInput = ref}
+                                        id="password"
+                                        onChange={this.getPassword}
+                                        value={this.state.passwordValue} />
+                        </Form.Group>
+                        <Form.Row as={"div"}>
+                            <Form.Check type="checkbox" label="Remember Me"
+                                onChange={this.rememberMe}
+                                defaultChecked={this.props.rememberMe}
+                                id="rememberMe" />
+                        </Form.Row>
+                        <br />
+                        <Form.Row as={"div"}>
+                            <Button variant="primary" type="submit" className="center" id="login-button" onClick={this.login.bind(this)}> Log In </Button>
+                        </Form.Row>
+                        <br />
+                        <Form.Row as={"div"}>
+                            <Form.Label className="center">
+                                <span id="forgotpwd" value="forgotpwd" onClick={this.forgotPassword} >
+                                    Forgot Password?
+                                        </span>
+                            </Form.Label>
+                        </Form.Row>
+                    </Form>
+                </div>
+            </div>
         
         )
     }
 }
 
-export default Signin;
+const mapStateToProps = (state) => {
+    let { username, idToken, rememberMe, password, currentPage } = state.sessionReducer
+
+    return {
+        username: username,
+        idToken: idToken,
+        rememberMe: rememberMe,
+        password: password,
+        currentPage: currentPage
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    setIDUser: (idUser, dbName, companyName) => dispatch(setIDUser(idUser, dbName, companyName)),
+    setIDToken: (idToken, username, password) => dispatch(setIDToken(idToken, username, password)),
+    setRememberMe: (rememberMe) => dispatch(setRememberMe(rememberMe))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

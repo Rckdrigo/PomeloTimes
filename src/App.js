@@ -1,24 +1,34 @@
 import React, {Component} from 'react';
-import 'antd/dist/antd.css';
-import Signin from './components/signin.js'
-import Dashboard from './components/dashBoard/dashboard.js';
+import logo from './logo.svg';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import CookieReader from './CookieReader'
 
 import './App.css';
+
+import Signin from './components/signin.js'
+import Dashboard from './components/dashBoard/dashboard.js';
+import Main from './components/main/main.js';
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 class App extends Component {
 
     render = () => {
         return (
-            <BrowserRouter>
-                <div className="App">
-                    <Switch>
-                        <Route path="/" component={Signin} />
-                        <Route path="/dashboard" component={Dashboard} />
-                    </Switch>
-                </div>
-            </BrowserRouter>
+            <div className="App">
+                <header className="App-header">
+                    <BrowserRouter>
+                        <div className="App">
+                            <Switch>
+                                <Route path="/dashboard" component={Dashboard} />
+                                <Route path="/" component={Signin} />
+                                <Route component={Main} />
+                            </Switch>
+                        </div>
+                    </BrowserRouter>
+                    <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/>
+                </header>
+            </div>
         );
     }
 }
