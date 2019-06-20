@@ -1,5 +1,7 @@
 test('true', () => {
-    expect(true).toBe(true);
+    var test = false
+  
+    expect(test).toBe(true);
 });
 
 test('null', () => {
