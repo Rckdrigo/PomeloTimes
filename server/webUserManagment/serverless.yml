@@ -40,12 +40,12 @@ functions:
     handler: handler.webUser
     events:
       - http:
-          path: ${self:service}/get/{username}
+          path: ${self:service}/user/{username}
           method: get
           integration: lambda
 
       - http:
-          path: ${self:service}/post
+          path: ${self:service}/user
           method: post
           integration: lambda
 
