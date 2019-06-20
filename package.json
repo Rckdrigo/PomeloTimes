@@ -17,7 +17,7 @@
         "react-router-dom": "^5.0.1",
         "react-scripts": "^3.0.1",
         "redux": "^4.0.1",
-        "redux-persist": "^5.10.0"
+        "redux-persist": "^5.10.0",
         "serverless-mysql": "^1.4.0"
     },
     "scripts": {
