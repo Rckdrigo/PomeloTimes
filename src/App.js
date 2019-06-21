@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import 'antd/dist/antd.css';
 import Signin from './components/signin.js'
 import Dashboard from './components/dashBoard/dashboard.js';
 
@@ -14,8 +13,9 @@ class App extends Component {
             <BrowserRouter>
                 <div className="App">
                     <Switch>
-                        <Route path="/" component={Signin} />
                         <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/" component={Signin} />
+                        <Route component={Signin} />
                     </Switch>
                 </div>
             </BrowserRouter>

@@ -3,8 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Signin from './components/signin';
+import App from './App';
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
+import configureStore from './configureStore'
+
+
+ReactDOM.render(
+    <Provider store={configureStore().store}>
+        <PersistGate loading={null} persistor={configureStore().persistor}>
+            <App test="hello Nick" />
+        </PersistGate>
+    </Provider>, document.getElementById('root'));
+    
 // var CrossStorageClient = require('cross-storage').CrossStorageClient;
 // var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
 
@@ -15,7 +27,6 @@ import Signin from './components/signin';
 
 
 
-ReactDOM.render(<Signin saveCookie={saveCookie} loadCookie={loadCookie} />, document.getElementById('root'));
 
 fetch("http://localhost:3000/user_manager/getUsers").then(e => console.log(e))
 
