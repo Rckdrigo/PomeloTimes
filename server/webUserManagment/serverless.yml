@@ -29,11 +29,12 @@ provider:
   #     Resource: 
   #       - "arn:aws:s3:::[BUCKET NAME]/*"
 
-  # vpc:
-  #   securityGroupIds:
-  #     - 
-  #   subnetIds:
-  #     - 
+  vpc:
+    securityGroupIds:
+      - sg-a6ab77c3
+    subnetIds:
+      - subnet-95e231f0
+      - subnet-4ab1473d
 
 functions:
   webUser:
@@ -43,11 +44,163 @@ functions:
           path: ${self:service}/user/{username}
           method: get
           integration: lambda
+          timeout: 10 
 
       - http:
           path: ${self:service}/user
           method: post
           integration: lambda
+
+  createSuperUser:
+    handler: handler.createSuperUser
+    events:
+      - cognitoUserPool:
+          pool: myUserPool
+          trigger: PreSignUp
+          integration: lambda
+          
+      - cognitoUserPool:
+          pool: myUserPool
+          trigger: PostConfirmation
+          integration: lambda
+
+
+
+resources:
+  Resources:
+    # Cognito - User pool
+    CognitoUserPoolMyUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:custom.PROJECT}-user-pool-${opt:stage, 'dev'}
+        AutoVerifiedAttributes:
+          - email
+        MfaConfiguration: "OFF"
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+          - Name: phone_number
+            AttributeDataType: String
+            Mutable: true
+            Required: false
+          - Name: preferred_username
+            AttributeDataType: String
+            Mutable: true
+            Required: true
+
+        Policies:
+          PasswordPolicy:
+            RequireLowercase: true
+            RequireSymbols: false
+            RequireNumbers: true
+            MinimumLength: 8
+            RequireUppercase: true
+
+        AdminCreateUserConfig:
+          InviteMessageTemplate:
+            EmailMessage: "Temporary credentials: {username} and temporary password is {####}."
+            EmailSubject: Temporary credentials"
+            SMSMessage: "{username} and temporary password is {####}."
+          UnusedAccountValidityDays: 7
+          AllowAdminCreateUserOnly: false
+
+    # Cognito - Client
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:custom.PROJECT}-user-pool-client-${opt:stage, 'dev'}
+        UserPoolId:
+          Ref: CognitoUserPoolMyUserPool
+
+    # Cognito - Identity
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: ${self:custom.PROJECT}_identity_pool_${opt:stage, 'dev'}
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId:
+              Ref: CognitoUserPoolClient
+            ProviderName:
+              Fn::GetAtt: [CognitoUserPoolMyUserPool, ProviderName]
+
+    # Cognito roles
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId:
+          Ref: CognitoIdentityPool
+        Roles:
+          authenticated:
+            Fn::GetAtt: [CognitoAuthRole, Arn]
+          unauthenticated:
+            Fn::GetAtt: [CognitoUnauthRole, Arn]
+
+    CognitoAuthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.PROJECT}-AuthRole-${opt:stage, 'dev'}
+        Path: /
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Federated: "cognito-identity.amazonaws.com"
+              Action:
+                - "sts:AssumeRoleWithWebIdentity"
+              Condition:
+                StringEquals:
+                  "cognito-identity.amazonaws.com:aud":
+                    Ref: CognitoIdentityPool
+                "ForAnyValue:StringLike":
+                  "cognito-identity.amazonaws.com:amr": authenticated
+        Policies:
+          - PolicyName: "CognitoAuthorizedPolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "cognito-sync:*"
+                    - "cognito-identity:*"
+                  Resource: "*"
+                - Effect: "Allow"
+                  Action:
+                    - "execute-api:Invoke"
+                  Resource: "*"
+
+    CognitoUnauthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:custom.PROJECT}-UnauthRole-${opt:stage, 'dev'}
+        Path: /
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Federated: "cognito-identity.amazonaws.com"
+              Action:
+                - "sts:AssumeRoleWithWebIdentity"
+              Condition:
+                StringEquals:
+                  "cognito-identity.amazonaws.com:aud":
+                    Ref: CognitoIdentityPool
+                "ForAnyValue:StringLike":
+                  "cognito-identity.amazonaws.com:amr": unauthenticated
+        Policies:
+          - PolicyName: "CognitoUnauthorizedPolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "cognito-sync:*"
+                    - "cognito-identity:*"
+                  Resource: "*"
 
 plugins:
   - serverless-offline
