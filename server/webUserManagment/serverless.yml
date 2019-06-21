@@ -37,17 +37,17 @@ provider:
 
 functions:
   webUser:
-    handler: handler.get
+    handler: handler.webUser
     events:
       - http:
-          path: ${self:service}/get/{username}
+          path: ${self:service}/user/{username}
           method: get
           integration: lambda
 
-      # - http:
-      #     path: ${self:service}/hello
-      #     method: post
-      #     integration: lambda
+      - http:
+          path: ${self:service}/user
+          method: post
+          integration: lambda
 
 plugins:
   - serverless-offline
