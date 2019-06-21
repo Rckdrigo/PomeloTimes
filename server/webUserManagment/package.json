@@ -1,0 +1,33 @@
+{
+  "name": "temp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rckdrigo/BorealisTemplate.git"
+  },
+  "keywords": [
+    "template",
+    "serverless"
+  ],
+  "author": "Rodrigo Medina",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.464.0",
+    "gm": "^1.23.1",
+    "mysql": "^2.17.1",
+    "serverless-mysql": "^1.4.0",
+    "util": "^0.11.1"
+  },
+  "bugs": {
+    "url": "https://github.com/Rckdrigo/BorealisTemplate/issues"
+  },
+  "homepage": "https://github.com/Rckdrigo/BorealisTemplate#readme"
+}

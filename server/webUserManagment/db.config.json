@@ -1,23 +1,30 @@
 {
-    "dev": {
+    "offline": {
         "host": "localhost",
         "port":3306,
         "user": "root",
         "password": "eibiz1234",
         "database": "aurora"
     },
+    "dev": {
+        "host": "aurora-framework-cluster.cluster-caavbrtq1p16.ap-southeast-1.rds.amazonaws.com",
+        "port":3306,
+        "user": "eibizAdmin",
+        "password": "eibiz1234",
+        "database": "aurora_dev"
+    },
     "test": {
-        "host": "",
-        "port": 0,
-        "user": "",
-        "password": "",
-        "database": ""
+        "host": "aurora-framework-cluster.cluster-caavbrtq1p16.ap-southeast-1.rds.amazonaws.com",
+        "port":3306,
+        "user": "eibizAdmin",
+        "password": "eibiz1234",
+        "database": "aurora_test"
     },
     "prod": {
-        "host": "",
-        "port": 0,
-        "user": "",
-        "password": "",
-        "database": ""
+        "host": "aurora-framework-cluster.cluster-caavbrtq1p16.ap-southeast-1.rds.amazonaws.com",
+        "port":3306,
+        "user": "eibizAdmin",
+        "password": "eibiz1234",
+        "database": "aurora_prod"
     }
 }
