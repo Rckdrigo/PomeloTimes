@@ -2,11 +2,11 @@ import AWS from 'aws-sdk'
 
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
-import poolData from '../config/config.json'
+import config from '../config/config.json'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-const userPool = new CognitoUserPool(poolData)
+const userPool = new CognitoUserPool(config)
 
 export const createUser = (username, email, password, phone_number, callback) => {
     var attributeList = [];
@@ -106,7 +106,10 @@ export const newPwd = (username,password,newPassword,userAttributes,cognitoUser,
 
                 cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, {
                     onSuccess: result => {
-                        AWS.config.credentials.refresh(err => {
+                        var creds = new AWS.Credentials({
+                          accessKeyId: config.AWS_ACCESS_KEY, secretAccessKey: config.AWS_SECRET_KEY, sessionToken: null
+                        });
+                        creds.refresh(err => {
                             if (err) {
                                 throw err
                             } else {

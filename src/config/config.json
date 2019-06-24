@@ -1,8 +1,8 @@
 {
     "environment":"",
 	"BUCKET": "",
-	"AWS_ACCESS_KEY": "AKIAZLPEQ6D7JGJW4KHF",
-    "AWS_SECRET_KEY": "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",
+	"AWS_ACCESS_KEY": "AKIAIDHG67K4P7KFHSNA",
+    "AWS_SECRET_KEY": "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",
     
     "UserPoolId": "ap-southeast-1_XMRNUtKEa",
     "ClientId": "3lhj5fiecp9pr6vl1dkk7dphsi",
