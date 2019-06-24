@@ -1,0 +1,16 @@
+Service Information
+service: webUserManagment
+stage: dev
+region: ap-southeast-1
+stack: aurora-webUserManagment-stack-dev
+resources: 23
+api keys:
+  None
+endpoints:
+  GET - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
+  POST - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user
+functions:
+  webUser: webUserManagment-dev-webUser
+  createSuperUser: webUserManagment-dev-createSuperUser
+layers:
+  None

@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('./db.config.json')
+// const mysql = require('./node_modules/serverless-mysql')
 
 const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -16,7 +17,7 @@ const dbConfig = (context) => {
     else
         c = config.dev
 
-    return c
+    return c;
 }
 
 const concatProductRoles = (productRoles) => { 
@@ -30,40 +31,81 @@ const concatProductRoles = (productRoles) => {
     return productsString;
 }
 
+module.exports.createSuperUser = async (event, context, callback) => {
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    let db = dbConfig(context);
+    let mysql = require('serverless-mysql')({ config: db })
+
+    switch(event.triggerSource){
+        case 'PostConfirmation_ConfirmForgotPassword':
+            console.log('PostConfirmation_ConfirmForgotPassword')
+            callback (null ,event)
+            break;
+
+        case 'PreSignUp_AdminCreateUser':
+            console.log('PreSignUp_AdminCreateUser')
+
+            let { userName } = event
+            let { email } = event.request.userAttributes
+
+            //Run your query
+            var create = 'call createWebUser(?,?,?,?,?,?,?);';
+            await mysql.query(create, [userName, "", "", email, null, 0, "1"])
+
+            // Run clean up function
+            await mysql.end()
+
+            callback(null, event)
+            break;
+        default:
+            console.log('default')
+            callback(null, event)
+            break
+    }
+}
+
 module.exports.webUser = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const mysql = require('serverless-mysql')({ config: dbConfig(context) })
 
+    let db = dbConfig(context);
+    let mysql = require('serverless-mysql')({ config: db })
+
+    let response = null;
     switch (event.method) {
         case "GET":
             var { username } = event.path;
-            var select = 'call selectAllUserInformation(?);';
-            var response = await mysql.query(select, [username])
+            let select = 'call selectAllUserInformation(?);';
+            
 
-            await mysql.end()
-                .catch(e => { throw (e) })
+            response = await mysql.query(select, [username]);      
+                // .catch(e => { throw (e) })
+
+            await mysql.end().catch(e => { throw (e) });
 
             return {
                 headers,
                 statusCode: 200,
-                response: response[0]   
-            };
+                response: response[0],  
+                username,
+                db
+            }
 
         case "POST":
             var { username, firstName, lastName, email, idCompany, superuser, productRoles } = event.body;
             var create = 'call createWebUser(?,?,?,?,?,?,?);';
-            var response = await mysql.query(create, [username, firstName, lastName, email, idCompany, superuser, concatProductRoles(productRoles)])
+            response = await mysql.query(create, [username, firstName, lastName, email, idCompany, superuser, concatProductRoles(productRoles)])
 
             await mysql.end()
                 .catch(e => { throw (e) })
             return {
                 headers,
                 // r : concatProductRoles(productRoles),
-                statusCode: 200,
-                response: response[0]
+                statusCode: 200
+                // response: response[0]
             };
-
     }
+    
 
 
 }
