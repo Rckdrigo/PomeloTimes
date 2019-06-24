@@ -20,25 +20,25 @@ ReactDOM.render(
 // var CrossStorageClient = require('cross-storage').CrossStorageClient;
 // var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
 
-import configureStore from './configureStore'
+// import configureStore from './configureStore'
 
-var CrossStorageClient = require('cross-storage').CrossStorageClient;
-var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
+// var CrossStorageClient = require('cross-storage').CrossStorageClient;
+// var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
 
-var saveCookie = (key, value) => {
-    var setKey = function () { return storage.set(key, value); };
-    storage.onConnect().then(setKey).catch(e => {throw e});
-}
+// var saveCookie = (key, value) => {
+//     var setKey = function () { return storage.set(key, value); };
+//     storage.onConnect().then(setKey).catch(e => {throw e});
+// }
 
 
 
-ReactDOM.render(
-	<Provider store={configureStore().store}>
-        <PersistGate loading={null} persistor={configureStore().persistor}>
-			<App saveCookie={saveCookie} loadCookie={loadCookie} />
-			</PersistGate>
-    </Provider>
-	, document.getElementById('root'));
+// ReactDOM.render(
+// 	<Provider store={configureStore().store}>
+//         <PersistGate loading={null} persistor={configureStore().persistor}>
+// 			<App saveCookie={saveCookie} loadCookie={loadCookie} />
+// 			</PersistGate>
+//     </Provider>
+// 	, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
+// // If you want your app to work offline and load faster, you can change
+// // unregister() to register() below. Note this comes with some pitfalls.
