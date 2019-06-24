@@ -6,6 +6,8 @@ var initialState = {
     userId: '',
     dbName: '',
     companyName: '',
+    isApprover: '',
+
     currentPage: ''
 }
 
@@ -25,13 +27,14 @@ function sessionReducer(state = initialState, action) {
                 rememberMe: action.rememberMe
             }
 
-        case 'SET_ID_USER':
+        case 'SET_USER_INFO':
             console.log(action)
             return {
                 ...state,
                 idUser: action.idUser,
                 dbName: action.dbName,
-                companyName: action.companyName
+                companyName: action.companyName,
+                isApprover: action.isApprover
             }     
 
         case 'CHANGE_PAGE':

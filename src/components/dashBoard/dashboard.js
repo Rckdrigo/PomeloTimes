@@ -12,7 +12,7 @@ class DashApp extends Component {
 
   render = () => {
       return (
-        <div>Dashboard</div>
+        <h1>Dashboard</h1>
       );
   }
 }

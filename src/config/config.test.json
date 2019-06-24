@@ -1,0 +1,10 @@
+{
+    "environment":"test",
+	"BUCKET": "android-imedia-uploads-bucket-test",
+	"AWS_ACCESS_KEY": "AKIAIHWILIGOTKRTC7AA",
+    "AWS_SECRET_KEY": "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",
+    
+    "UserPoolId": "ap-southeast-1_3iG5u2Uow",
+    "ClientId": "6kngdtjr2kprbc8tv050s8dv5q",
+    "IdentityPoolId": "ap-southeast-1:67ee9f0d-8e4d-4894-bb96-60e48203a905"
+}

@@ -2,6 +2,6 @@ export function setIDToken(idToken, username, password) { return { type: 'SET_CR
 
 export function setRememberMe(rememberMe) { return { type: 'REMEMBER_ME', rememberMe: rememberMe } }
 
-export function setIDUser(idUser, dbName, companyName) { return { type: 'SET_ID_USER', idUser: idUser, dbName: dbName, companyName: companyName } }
+export function setUserInfo(userInfo) { return { type: 'SET_USER_INFO', userInfo: userInfo } }
 
 export function changePage(currentPage) { return { type: 'CHANGE_PAGE', currentPage: currentPage } }

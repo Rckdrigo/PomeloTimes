@@ -1,8 +1,20 @@
 import React, {Component} from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap'
+import axios from 'axios';
+import './../App.css';
 import './signin.css';
-import { setIDToken, setRememberMe, setIDUser } from '../actions/sessionActions';
+import Iframe from 'react-iframe';
+//import { Link} from 'react-router-dom';
+import { Form, Button, Col, Row, Card, Modal } from 'react-bootstrap';
+import { setIDToken, setRememberMe, setUserInfo } from '../actions/sessionActions';
 import { connect } from 'react-redux';
+import { authenticateUser, newPwd } from '../cognito/cognito';
+import NewPwdModal from './NewPwdModal.js';
+
+const api = require('../api/api.local.json');
+
+
+// import ForgotPassword from './ForgotPwd.js'
+
 
 class Signin extends Component{
 
@@ -15,51 +27,178 @@ class Signin extends Component{
         save: false,
         require: "",
         usernameValue: "",
-        passwordValue: ""
+        passwordValue: "",
+        forgotPassword: false,
     }
 
-    getUsername = () => {
+    //check login by using cognito
+    checkLogin = () => {
+        //e.preventDefault();
+
+        console.log("test"+ this.usernameInput.value);
+
+        authenticateUser(this.usernameInput.value, this.passwordInput.value, (err, result, require, cognitoUser) => {
+            if (err) {
+                if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException' || err.code === 'InvalidParameterException' || err.code === 'UserNotFoundException') {
+                    this.setState({ error: true })
+                    document.getElementById('warning').style.visibility = 'visible';
+                   
+                    console.log("======================"+err.code);
+                }
+                // alert(err.code)
+                return;
+            }
+            if (typeof require !== "undefined") {
+                this.setState({ require: require, cognitoUser: cognitoUser, result: result }, this.requireNewPassword());
+                /*if(this.state.save === true){
+                    newPwd(this.usernameInput.value, this.passwordInput.value,this.state.ConfirmPassword,require);
+                }*/
+            }
+            document.getElementsByClassName("login-inputbox").borderColor = '#3e3e3e';
+            this.setState({ idToken: result.getIdToken().getJwtToken() })
+            this.authorizeUserPool(result);
+        });
 
     }
-    getPassword = () => {
+
+    //check login by using db (also check inUse status)
+    authorizeUserPool = (r) => {
+
+        console.log(api.webUserManagment + this.usernameInput.value)
+
+        axios.get(api.webUserManagment + this.usernameInput.value)
+            .then(result => {
+                console.log("Result", result)
+                console.log(result.data.response)
+
+                this.props.setUserInfo(result.data.response)
+
+                this.props.history.push("/dashboard");
+                
+
+            })
+            .catch(e => { throw (e) })
 
     }
-    rememberMe = () => {
 
-    }
-    login = (e) => {
-        e.preventDefault();
-        this.props.history.push("/dashboard");
-    }
-    forgotPassword = () => {
+    //new password required (first time login)
+    handleChangePassword = (e) => this.setState({ Password: e.target.value });
 
+    handleChangeConfirmPassword = (e) => this.setState({ ConfirmPassword: e.target.value });
+
+    //save new password (first time login)
+    handleSave = () => {
+        console.log("STATE:", this.state)
+        this.n.handleClose();
+        newPwd(this.usernameInput.value, this.passwordInput.value, this.state.ConfirmPassword, this.state.require, this.state.cognitoUser, (err, result) => {
+            if (err) {
+                alert(err.code);
+            }
+            this.setState({ idToken: result.getIdToken().getJwtToken() })
+            this.authorizeUserPool(result);
+        });
     }
+
+    //new password required modal
+    requireNewPassword = () => this.n.handleShow();
+
+    //recovering password modal
+    //forgotPassword = () => this.f.handleShow();
 
     render = () => {
+        let CloseModal = () => this.setState({ forgotPassword: false });
+        let n = (<NewPwdModal handleChangePassword={this.handleChangePassword} handleChangeConfirmPassword={this.handleChangeConfirmPassword} handleSave={this.handleSave} ref={ref => this.n = ref} />);
+        // let f = (<ForgotPassword handleChangeNewPassword={this.handleChangeNewPassword} handleSaveChangePassword={this.handleSaveChangePassword} handleSend={this.handleSend} handleChangeUsername={this.handleChangeUsername} forgotpwd_user_ok={this.state.forgotpwd_user_ok} ref={ref => this.f = ref} />);
         return (
-        <div id="body-login">
-                <div id="login-background" />
-                <div id="login-form">
+        <div>
+            <div id="login_modal">{n}</div>
+            <div id="login-background" />
+            <div id="login-form"></div>
+            
 
-                    <Form id='login-inputForm'>
-                        <Form.Label id="login-title">SIGN IN TO AURORA</Form.Label>
-                        <br />
+           
+
+            <Row className="signinWrap" style={{ paddingLeft: '10px' }}>
+                <Col xs={12} sm={12} md={7} lg={8}>
+                    <Row>
+                        <Col xs={12}>
+                            <h1>AURORA</h1>
+                            <h5 className="text-uppercase color-green">Framework 0.1</h5>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12} sm={12} md={6}>
+                            <Card className="shadow-sm">
+                                <Iframe url="https://www.youtube.com/embed/cggc8kNll2M"
+                                width="100%"
+                                height="450px"
+                                id="myId"
+                                className="myClassname"
+                                display="initial"
+                                position="relative"/>
+                                <Card.Body>
+                                    <Card.Title>Card Title</Card.Title>
+                                    <Card.Text>
+                                    Some quick example text to build on the card title and make up the bulk of
+                                    the card's content.
+                                    </Card.Text>
+                                    <Button variant="" className="text-uppercase background-green">Join now</Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xs={12} sm={12} md={6}>
+                            <Card className="shadow-sm">
+                                <Iframe url="https://www.youtube.com/embed/4nfWhWEy2Hc"
+                                width="100%"
+                                height="450px"
+                                id="myId"
+                                className="myClassname"
+                                display="initial"
+                                position="relative"/>
+                                <Card.Body>
+                                    <Card.Title>Card Title</Card.Title>
+                                    <Card.Text>
+                                    Some quick example text to build on the card title and make up the bulk of
+                                    the card's content.
+                                    </Card.Text>
+                                    <Button variant="" className="text-uppercase background-green">Join now</Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs={12} sm={12} md={5} lg={4} className="loginPanel d-flex">
+                <Form id='login-inputForm' className="m-auto form-login" style={{ maxWidth: '350px', width: '80%' }}>
+                        <Form.Label id="login-title" className="text-uppercase">Sign in to AURORA</Form.Label>
+                        <br/>
+                        <p className="text-uppercase"><small>Enter your detail below</small></p>
+                        
                         <Form.Group className="login-inputbox">
+                            <Form.Label>Username</Form.Label>
                             <Form.Control type="text"
                                 placeholder="Username"
                                 ref={ref => this.usernameInput = ref}
                                 id="username"
-                                onChange={this.getUsername}
-                                value={this.state.usernameValue} />
+                                onKeyDown={this.getUsername}
+                                onChange={this.onUsernameChange}
+                                defaultValue={this.state.usernameValue} />
                         </Form.Group>
 
                         <Form.Group className="login-inputbox">
+                            <Row>
+                                <Col><Form.Label>Password</Form.Label></Col>
+                                <Col>
+                                    <button type="button" className="btn btn-link color-green" onClick={() => this.setState({ forgotPassword: true })}>Forgot Password?</button>
+                                </Col>
+                            </Row>
+                            
                             <Form.Control type="password"
-                                        placeholder="Password"
-                                        ref={ref => this.passwordInput = ref}
-                                        id="password"
-                                        onChange={this.getPassword}
-                                        value={this.state.passwordValue} />
+                                placeholder="Password"
+                                ref={ref => this.passwordInput = ref}
+                                id="password"
+                                onKeyDown={this.getPassword}
+                                onChange={this.onPasswordChange}
+                                defaultValue={this.state.passwordValue} />
                         </Form.Group>
                         <Form.Row as={"div"}>
                             <Form.Check type="checkbox" label="Remember Me"
@@ -69,19 +208,50 @@ class Signin extends Component{
                         </Form.Row>
                         <br />
                         <Form.Row as={"div"}>
-                            <Button variant="primary" type="submit" className="center" id="login-button" onClick={this.login.bind(this)}> Log In </Button>
-                        </Form.Row>
-                        <br />
-                        <Form.Row as={"div"}>
-                            <Form.Label className="center">
-                                <span id="forgotpwd" value="forgotpwd" onClick={this.forgotPassword} >
-                                    Forgot Password?
-                                        </span>
-                            </Form.Label>
+                            <Button variant=""  onClick={this.checkLogin}  className="center background-green text-uppercase" id="login-button"> Signin </Button>
                         </Form.Row>
                     </Form>
+                </Col>
+            </Row>
+
+
+            <Modal
+            show={this.state.forgotPassword}
+            onHide={CloseModal}
+            aria-labelledby="example-modal-sizes-title-sm"
+            >
+            <Modal.Header closeButton>
+            <Modal.Header>
+                <Modal.Title id='forgotpwd_title'>Forgot your password?</Modal.Title>
+            </Modal.Header>
+            </Modal.Header>
+            <Modal.Body>
+                <div id='pwdPolicy'>
+                    Enter your username below <br/>
+                    and we'll get you back on track <br/>
                 </div>
-            </div>
+                <br/>
+                <form>
+                    <Form.Group>
+                        <Form.Label className="color-green font-weight-bold text-uppercase">Username</Form.Label>
+                                <Form.Control className="inputText"
+                                    id="pwd_inputText"
+                                    type="text"
+                                    value={this.state.value}
+                                    onChange={this.handleChangeUsername} />
+                                <Form.Control.Feedback />
+                    </Form.Group>
+                </form>
+                <div id="usernotfound" className="text-danger">User not found</div>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={CloseModal}>Close</Button>
+                <Button onClick={this.checkLogin} >Send</Button>
+            </Modal.Footer>
+            </Modal>
+
+            
+        </div>
         
         )
     }
@@ -100,7 +270,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setIDUser: (idUser, dbName, companyName) => dispatch(setIDUser(idUser, dbName, companyName)),
+    setUserInfo: (userInfo) => dispatch(setUserInfo(userInfo)),
     setIDToken: (idToken, username, password) => dispatch(setIDToken(idToken, username, password)),
     setRememberMe: (rememberMe) => dispatch(setRememberMe(rememberMe))
 });
