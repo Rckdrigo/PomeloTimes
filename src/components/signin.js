@@ -7,12 +7,12 @@ import Iframe from 'react-iframe';
 import { Form, Button, Col, Row, Card, Modal } from 'react-bootstrap';
 import { setIDToken, setRememberMe, setUserInfo } from '../actions/sessionActions';
 import { connect } from 'react-redux';
+import { authenticateUser, newPwd } from '../cognito/cognito';
+import NewPwdModal from './NewPwdModal.js';
+
 const api = require('../api/api.local.json');
 
 
-
-
-// import NewPwdModal from './NewPwdModal.js';
 // import ForgotPassword from './ForgotPwd.js'
 
 
@@ -36,7 +36,29 @@ class Signin extends Component{
         //e.preventDefault();
 
         console.log("test"+ this.usernameInput.value);
-        this.authorizeUserPool();
+
+        authenticateUser(this.usernameInput.value, this.passwordInput.value, (err, result, require, cognitoUser) => {
+            if (err) {
+                if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException' || err.code === 'InvalidParameterException' || err.code === 'UserNotFoundException') {
+                    this.setState({ error: true })
+                    document.getElementById('warning').style.visibility = 'visible';
+                   
+                    console.log("======================"+err.code);
+                }
+                // alert(err.code)
+                return;
+            }
+            if (typeof require !== "undefined") {
+                this.setState({ require: require, cognitoUser: cognitoUser, result: result }, this.requireNewPassword());
+                /*if(this.state.save === true){
+                    newPwd(this.usernameInput.value, this.passwordInput.value,this.state.ConfirmPassword,require);
+                }*/
+            }
+            document.getElementsByClassName("login-inputbox").borderColor = '#3e3e3e';
+            this.setState({ idToken: result.getIdToken().getJwtToken() })
+            this.authorizeUserPool(result);
+        });
+
     }
 
     //check login by using db (also check inUse status)
@@ -59,19 +81,37 @@ class Signin extends Component{
 
     }
 
+    //new password required (first time login)
+    handleChangePassword = (e) => this.setState({ Password: e.target.value });
+
+    handleChangeConfirmPassword = (e) => this.setState({ ConfirmPassword: e.target.value });
+
+    //save new password (first time login)
+    handleSave = () => {
+        console.log("STATE:", this.state)
+        this.n.handleClose();
+        newPwd(this.usernameInput.value, this.passwordInput.value, this.state.ConfirmPassword, this.state.require, this.state.cognitoUser, (err, result) => {
+            if (err) {
+                alert(err.code);
+            }
+            this.setState({ idToken: result.getIdToken().getJwtToken() })
+            this.authorizeUserPool(result);
+        });
+    }
+
     //new password required modal
-    //requireNewPassword = () => this.n.handleShow();
+    requireNewPassword = () => this.n.handleShow();
 
     //recovering password modal
     //forgotPassword = () => this.f.handleShow();
 
     render = () => {
         let CloseModal = () => this.setState({ forgotPassword: false });
-        // let n = (<NewPwdModal handleChangePassword={this.handleChangePassword} handleChangeConfirmPassword={this.handleChangeConfirmPassword} handleSave={this.handleSave} ref={ref => this.n = ref} />);
+        let n = (<NewPwdModal handleChangePassword={this.handleChangePassword} handleChangeConfirmPassword={this.handleChangeConfirmPassword} handleSave={this.handleSave} ref={ref => this.n = ref} />);
         // let f = (<ForgotPassword handleChangeNewPassword={this.handleChangeNewPassword} handleSaveChangePassword={this.handleSaveChangePassword} handleSend={this.handleSend} handleChangeUsername={this.handleChangeUsername} forgotpwd_user_ok={this.state.forgotpwd_user_ok} ref={ref => this.f = ref} />);
         return (
         <div>
-            {/* <div id="login_modal">{n}{f}</div> */}
+            <div id="login_modal">{n}</div>
             <div id="login-background" />
             <div id="login-form"></div>
             
