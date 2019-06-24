@@ -44,11 +44,15 @@ functions:
           path: ${self:service}/user/{username}
           method: get
           integration: lambda
-          timeout: 10 
 
       - http:
           path: ${self:service}/user
           method: post
+          integration: lambda
+
+      - http:
+          path: ${self:service}/user/{username}
+          method: delete
           integration: lambda
 
   createSuperUser:
@@ -59,10 +63,10 @@ functions:
           trigger: PreSignUp
           integration: lambda
           
-      - cognitoUserPool:
-          pool: myUserPool
-          trigger: PostConfirmation
-          integration: lambda
+      # - cognitoUserPool:
+      #     pool: myUserPool
+      #     trigger: PostConfirmation
+      #     integration: lambda
 
 
 
@@ -103,7 +107,7 @@ resources:
             EmailMessage: "Temporary credentials: {username} and temporary password is {####}."
             EmailSubject: Temporary credentials"
             SMSMessage: "{username} and temporary password is {####}."
-          UnusedAccountValidityDays: 7
+          TemporaryPasswordValidityDay: 7
           AllowAdminCreateUserOnly: false
 
     # Cognito - Client

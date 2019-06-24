@@ -5,6 +5,7 @@
     "author": "Eibiz Co. Ltd",
     "dependencies": {
         "antd": "^3.19.6",
+        "aws-sdk": "^2.464.0",
         "axios": "^0.19.0",
         "babel-jest": "^24.8.0",
         "cross-storage": "^1.0.0",
@@ -13,8 +14,7 @@
         "react-dom": "^16.8.6",
         "react-router": "^5.0.1",
         "react-router-dom": "^5.0.1",
-        "react-scripts": "^3.0.1",
-        "aws-sdk": "^2.464.0"
+        "react-scripts": "^3.0.1"
     },
     "scripts": {
         "start": "react-scripts start",

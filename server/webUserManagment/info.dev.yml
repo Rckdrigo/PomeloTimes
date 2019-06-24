@@ -9,6 +9,7 @@ api keys:
 endpoints:
   GET - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
   POST - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user
+  DELETE - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
 functions:
   webUser: webUserManagment-dev-webUser
   createSuperUser: webUserManagment-dev-createSuperUser
