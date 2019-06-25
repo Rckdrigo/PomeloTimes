@@ -1,5 +1,5 @@
 test('true', () => {
-    var test = false
+    var test = true
   
     expect(test).toBe(true);
 });

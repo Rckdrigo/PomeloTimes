@@ -26,11 +26,20 @@ class Signin extends Component{
         require: "",
         usernameValue: "",
         passwordValue: "",
-        forgotPassword: false,
+        forgotPassword: false
     }
 
     componentDidMount = () => {
-        console.log(this.props)
+        console.log(this)
+
+        if(this.props.username !== "" && this.props.rememberMe){
+            console.log("THIS IS USERNAME ", this.props.username)
+
+            this.usernameInput.value = this.props.username;
+            this.passwordInput.value = this.props.password;
+
+            // this.authUser (this.props.username, this.props.password)
+        }else    console.log("NOTHING")
 
         if (this.props.idToken !== '')
             this.props.history.push(this.props.currentPage);
@@ -42,18 +51,18 @@ class Signin extends Component{
         this.handleSave = this.handleSave.bind(this)
     }
 
-    //check login by using cognito
-    checkLogin = () => {
-        //e.preventDefault();
+     
 
-        console.log("test"+ this.usernameInput.value);
+    //For Enabled Login Button
+    onUsernameChange = () =>{ this.setState({ usernameValue: this.usernameInput.value })}
+    onPasswordChange = () => { this.setState({ passwordValue: this.passwordInput.value })}
+    
 
-        authenticateUser(this.usernameInput.value, this.passwordInput.value, (err, result, require, cognitoUser) => {
+    authUser = (username, password) => {
+        authenticateUser(username, password, (err, result, require, cognitoUser) => {
             if (err) {
                 if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException' || err.code === 'InvalidParameterException' || err.code === 'UserNotFoundException') {
                     this.setState({ error: true })
-                   
-                    console.log("======================"+err.code);
                 }
                 // alert(err.code)
                 return;
@@ -67,6 +76,31 @@ class Signin extends Component{
             this.setState({ idToken: result.getIdToken().getJwtToken() })
             this.authorizeUserPool(result);
         });
+    }
+
+    //check login by using cognito
+    checkLogin = (e) => {
+        e.preventDefault();
+
+        console.log("test"+ this.usernameInput.value);
+        this.authUser (this.usernameInput.value, this.passwordInput.value);
+        // authenticateUser(this.usernameInput.value, this.passwordInput.value, (err, result, require, cognitoUser) => {
+        //     if (err) {
+        //         if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException' || err.code === 'InvalidParameterException' || err.code === 'UserNotFoundException') {
+        //             this.setState({ error: true })
+        //         }
+        //         // alert(err.code)
+        //         return;
+        //     }
+        //     if (typeof require !== "undefined") {
+        //         this.setState({ require: require, cognitoUser: cognitoUser, result: result }, this.requireNewPassword());
+        //         /*if(this.state.save === true){
+        //             newPwd(this.usernameInput.value, this.passwordInput.value,this.state.ConfirmPassword,require);
+        //         }*/
+        //     }
+        //     this.setState({ idToken: result.getIdToken().getJwtToken() })
+        //     this.authorizeUserPool(result);
+        // });
 
     }
 
@@ -82,9 +116,8 @@ class Signin extends Component{
                 
             })
             .then(result => {
-                console.log("Result", result)
-                
-                console.log(result.data.response)
+                //console.log("Result", result)
+                //console.log(result.data.response)
                 let roleName = "";
                 result.data.response.productRoles.map((product) => {
                     if(product.productName === "aurora"){
@@ -95,7 +128,6 @@ class Signin extends Component{
 
                 this.props.setUserInfo(result.data.response.productRoles,"aurora",roleName,result.data.response.allUsers,result.data.response.userInformation);
                 this.props.setIDToken(r.getIdToken().getJwtToken(), this.usernameInput.value, this.props.rememberMe ? this.passwordInput.value : null);
-               // this.props.setUserInfo(result.data.response.userInformation, result.data.response.companyInformation, result.data.response.isAuroraSuperuser, result.response.productRoles)
 
                 if(this.props.currentPage === ''){
                     this.props.history.push("/dashboard");
@@ -156,8 +188,12 @@ class Signin extends Component{
     //recovering password modal
     forgotPassword = () => this.f.handleShow();
 
+    
+
     render = () => {
-        let CloseModal = () => this.setState({ forgotPassword: false });
+
+        const enabled = (this.state.usernameValue.length > 0 && this.state.passwordValue.length > 0) || (this.props.username.length >0);
+
         let n = (<NewPwdModal handleChangePassword={this.handleChangePassword} handleChangeConfirmPassword={this.handleChangeConfirmPassword} handleSave={this.handleSave} ref={ref => this.n = ref} />);
         let f = (<ForgotPassword handleChangeNewPassword={this.handleChangeNewPassword} handleSaveChangePassword={this.handleSaveChangePassword} handleSend={this.handleSend} handleChangeUsername={this.handleChangeUsername} forgotpwd_user_ok={this.state.forgotpwd_user_ok} ref={ref => this.f = ref} />);
         return (
@@ -165,9 +201,7 @@ class Signin extends Component{
             <div id="login_modal">{n}{f}</div>
             <div id="login-background" />
             <div id="login-form"></div>
-            
 
-           
 
             <Row className="signinWrap" style={{ paddingLeft: '10px' }}>
                 <Col xs={12} sm={12} md={7} lg={8}>
@@ -261,7 +295,7 @@ class Signin extends Component{
                         </Form.Row>
                         <br />
                         <Form.Row as={"div"}>
-                            <Button variant=""  onClick={this.checkLogin}  className="center background-green text-uppercase" id="login-button"> Signin </Button>
+                            <Button variant="" disabled={!enabled}  onClick={this.checkLogin}  className="center background-green text-uppercase" id="login-button"> Signin </Button>
                         </Form.Row>
                     </Form>
                 </Col>

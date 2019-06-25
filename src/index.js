@@ -8,10 +8,13 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import configureStore from './configureStore'
+
+const config = require('./config/config.json')
     
 var CrossStorageClient = require('cross-storage').CrossStorageClient;
-var storage = new CrossStorageClient('http://localhost:3001/hub.html');
+console.log(config.aurora_url + '/hub.html')
 
+var storage = new CrossStorageClient(config.aurora_url + '/hub.html');
 var saveCookie = (key, value) => {
     var setKey = function () { return storage.set(key, value); };
     storage.onConnect().then(setKey).catch(e => {throw e});
