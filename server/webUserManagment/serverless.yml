@@ -13,7 +13,7 @@ provider:
   profile: ${file(${self:custom.PATH}):profile, 'default'}
 
   logRetentionInDays: ${file(${self:custom.PATH}):logRetentionInDays , 90}
-  memorySize: ${file(${self:custom.PATH}):memorySize, 128}
+  memorySize: ${file(${self:custom.PATH}):memorySize, 256}
   timeout: ${file(${self:custom.PATH}):timeout}
   
   stackName: ${self:custom.PROJECT}-${self:service}-stack-${self:provider.stage}
@@ -44,12 +44,49 @@ functions:
           path: ${self:service}/user/{username}
           method: get
           integration: lambda
-          timeout: 10 
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Access-Control-Allow-Credentials
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - idToken
+            allowCredentials: false
 
       - http:
           path: ${self:service}/user
           method: post
           integration: lambda
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Access-Control-Allow-Credentials
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - idToken
+            allowCredentials: false
+
+      - http:
+          path: ${self:service}/user/{username}
+          method: delete
+          integration: lambda
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Access-Control-Allow-Credentials
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - idToken
+            allowCredentials: false
 
   createSuperUser:
     handler: handler.createSuperUser
@@ -59,10 +96,10 @@ functions:
           trigger: PreSignUp
           integration: lambda
           
-      - cognitoUserPool:
-          pool: myUserPool
-          trigger: PostConfirmation
-          integration: lambda
+      # - cognitoUserPool:
+      #     pool: myUserPool
+      #     trigger: PostConfirmation
+      #     integration: lambda
 
 
 
@@ -103,7 +140,7 @@ resources:
             EmailMessage: "Temporary credentials: {username} and temporary password is {####}."
             EmailSubject: Temporary credentials"
             SMSMessage: "{username} and temporary password is {####}."
-          UnusedAccountValidityDays: 7
+          # TemporaryPasswordValidityDay: 7
           AllowAdminCreateUserOnly: false
 
     # Cognito - Client
