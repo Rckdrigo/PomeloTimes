@@ -8,17 +8,31 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import configureStore from './configureStore'
+    
+var CrossStorageClient = require('cross-storage').CrossStorageClient;
+var storage = new CrossStorageClient('http://localhost:3001/hub.html');
 
+var saveCookie = (key, value) => {
+    var setKey = function () { return storage.set(key, value); };
+    storage.onConnect().then(setKey).catch(e => {throw e});
+}
+
+async function loadCookie(key) {
+    var getKey = function () { return storage.get(key); };
+    var value;
+    await storage.onConnect().then(getKey)
+        .then(e=>value=e)
+        .catch(e => {throw e});
+    return value;
+}
 
 ReactDOM.render(
     <Provider store={configureStore().store}>
         <PersistGate loading={null} persistor={configureStore().persistor}>
-            <App test="hello Nick" />
+            <App saveCookie={saveCookie} loadCookie={loadCookie} />
         </PersistGate>
     </Provider>, document.getElementById('root'));
-    
-// var CrossStorageClient = require('cross-storage').CrossStorageClient;
-// var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
+
 
 // import configureStore from './configureStore'
 

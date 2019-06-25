@@ -300,8 +300,8 @@
 // ip_local()
 
 CrossStorageHub.init([
-    { origin: /.*192.168.1.128:300\d$/, allow: ['get'] },
-    { origin: /.*192.168.1.128:3001$/, allow: ['get', 'set', 'del'] },
+    // { origin: /.*192.168.1.128:300\d$/, allow: ['get'] },
+    // { origin: /.*192.168.1.128:3006$/, allow: ['get', 'set', 'del'] },
 
     { origin: /.*localhost:300\d$/, allow: ['get'] },
     { origin: /.*localhost:3001$/, allow: ['get', 'set', 'del'] }
