@@ -9,6 +9,8 @@ import imedia_green from '../../img/imedia_green.svg';
 import route from '../../img/route.svg';
 import logout_white from '../../img/logout_white.svg';
 
+const config = require('../../config/config.json')
+
 class Sidebar extends Component {
 
     state = {
@@ -141,7 +143,7 @@ class Sidebar extends Component {
                     </tr>
                     <tr>
                         <td className={ activeMenu[2] === 'true' ? 'td-expand menu active' : 'td-expand menu'} onClick={ (e) => this.clickThisMenu(2) } index ="2">
-                        <a href="http://localhost:3006/" target="_self"><div className="productMenu" style={{textAlign: "left", padding: 5 + 'px', paddingLeft: 18 + 'px'}}>
+                        <a href={config.products[0]['url']} target="_self"><div className="productMenu" style={{textAlign: "left", padding: 5 + 'px', paddingLeft: 18 + 'px'}}>
                             { activeMenu[2] === 'true' ? 
                                 <img src={imedia_green} alt="imedia"/> : 
                                 <img src={imedia_new_white} alt="imedia"/> }

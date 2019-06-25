@@ -1,15 +1,15 @@
 {
-    "environment":"dev",
-	"BUCKET": "android-imedia-uploads-bucket-dev",
-	"AWS_ACCESS_KEY": "AKIAIDHG67K4P7KFHSNA",
-    "AWS_SECRET_KEY": "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",
+    "environment":"test",
+	"BUCKET": "android-imedia-uploads-bucket-test",
+	"AWS_ACCESS_KEY": "AKIAIHWILIGOTKRTC7AA",
+    "AWS_SECRET_KEY": "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",
     
-    "UserPoolId": "ap-southeast-1_k1IhfWOrV",
-    "ClientId": "6j2fc72t97elfn7rqr9uh9njdb",
-    "IdentityPoolId": "ap-southeast-1:990ce11b-4250-4033-8e81-154746e5e63a",
-    
-    "aurora_url":"http://localhost:3001",
+    "UserPoolId": "ap-southeast-1_ieJqiQwnj",
+    "ClientId": "28sp74svheb7udbnthif08og3l",
+    "IdentityPoolId": "ap-southeast-1:bfa0e37a-916c-40b5-bcee-654f044e7092",
+
+    "aurora_url":"http://test.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com",
     "products":[
-        {"name" : "media-suite", "url" : "http://localhost:3006/"  }
+        {"name" : "media-suite", "url" : "http://test.mediasuite.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com"  }
     ]
 }

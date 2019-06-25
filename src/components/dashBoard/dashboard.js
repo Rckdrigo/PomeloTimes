@@ -30,10 +30,6 @@ class DashApp extends Component {
           <h2>{this.props.productName}</h2>
           <h2>{this.props.userInformation.username}</h2>
 
-          <button> <a href={ config.products[0]['url'] } target="_self" 
-            onClick = {() => this.props.saveCookie('role', this.props.roleName)}>
-            MEDIA SUITE 
-        </a></button>
         </div>
         
       );
