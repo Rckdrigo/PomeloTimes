@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import Sidebar from '../sidebar/sidebar.js';
 
 class DashApp extends Component {
   state = {
@@ -20,8 +21,9 @@ class DashApp extends Component {
 
   render = () => {
       return (
-
+        
         <div>
+        <Sidebar username={this.props.userInformation.username} />
           <h1>Dashboard</h1>
           <h2>{this.props.productName}</h2>
           <h2>{this.props.userInformation.username}</h2>
