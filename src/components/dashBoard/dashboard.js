@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 
 class DashApp extends Component {
   state = {
-    collapsed: false,
+      collapsed: false,
+
   };
 
   onCollapse = collapsed => {
@@ -12,9 +14,31 @@ class DashApp extends Component {
 
   render = () => {
       return (
-        <h1>Dashboard</h1>
+
+        <div>
+          <h1>Dashboard</h1>
+          <h2>{this.props.productName}</h2>
+          <h2>{this.props.userInformation.username}</h2>
+        </div>
+        
       );
   }
 }
 
-export default DashApp;
+const mapStateToProps = (state) => {
+  let { productRoles, productName, roleName, allUsers, userInformation} = state.sessionReducer
+
+  return {
+    productRoles: productRoles,
+    productName: productName,
+    roleName:roleName,
+    allUsers: allUsers,
+    userInformation: userInformation
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashApp);

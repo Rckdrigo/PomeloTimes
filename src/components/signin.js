@@ -4,16 +4,14 @@ import './../App.css';
 import './signin.css';
 import Iframe from 'react-iframe';
 //import { Link} from 'react-router-dom';
-import { Form, Button, Col, Row, Card, Modal } from 'react-bootstrap';
+import { Form, Button, Col, Row, Card } from 'react-bootstrap';
 import { setIDToken, setRememberMe, setUserInfo } from '../actions/sessionActions';
 import { connect } from 'react-redux';
-import { authenticateUser, newPwd } from '../cognito/cognito';
+import { authenticateUser, newPwd, forgotpassword} from '../cognito/cognito';
 import NewPwdModal from './NewPwdModal.js';
+import ForgotPassword from './ForgotPwd.js'
 
 const api = require('../api/api.local.json');
-
-
-// import ForgotPassword from './ForgotPwd.js'
 
 
 class Signin extends Component{
@@ -31,6 +29,19 @@ class Signin extends Component{
         forgotPassword: false,
     }
 
+    componentDidMount = () => {
+        console.log(this.props)
+
+        if (this.props.idToken !== '')
+            this.props.history.push(this.props.currentPage);
+
+        this.authorizeUserPool = this.authorizeUserPool.bind(this)
+        this.rememberMe = this.rememberMe.bind(this)
+        this.handleChangePassword = this.handleChangePassword.bind(this)
+        this.handleChangeConfirmPassword = this.handleChangeConfirmPassword.bind(this)
+        this.handleSave = this.handleSave.bind(this)
+    }
+
     //check login by using cognito
     checkLogin = () => {
         //e.preventDefault();
@@ -41,7 +52,6 @@ class Signin extends Component{
             if (err) {
                 if (err.code === 'UserNotFoundException' || err.code === 'NotAuthorizedException' || err.code === 'InvalidParameterException' || err.code === 'UserNotFoundException') {
                     this.setState({ error: true })
-                    document.getElementById('warning').style.visibility = 'visible';
                    
                     console.log("======================"+err.code);
                 }
@@ -54,7 +64,6 @@ class Signin extends Component{
                     newPwd(this.usernameInput.value, this.passwordInput.value,this.state.ConfirmPassword,require);
                 }*/
             }
-            document.getElementsByClassName("login-inputbox").borderColor = '#3e3e3e';
             this.setState({ idToken: result.getIdToken().getJwtToken() })
             this.authorizeUserPool(result);
         });
@@ -63,22 +72,41 @@ class Signin extends Component{
 
     //check login by using db (also check inUse status)
     authorizeUserPool = (r) => {
-
-        console.log(api.webUserManagment + this.usernameInput.value)
-
-        axios.get(api.webUserManagment + this.usernameInput.value)
+               
+        axios.get(api.webUserManagment + this.usernameInput.value,
+            {
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'idToken': r.getIdToken().getJwtToken()
+                }
+                
+            })
             .then(result => {
                 console.log("Result", result)
-                console.log(result.data.response)
-
-                this.props.setUserInfo(result.data.response)
-
-                this.props.history.push("/dashboard");
                 
+                console.log(result.data.response)
+                let roleName = "";
+                result.data.response.productRoles.map((product) => {
+                    if(product.productName === "aurora"){
+                        roleName = product.roleName;
+                    }
+                })
+
+
+                this.props.setUserInfo(result.data.response.productRoles,"aurora",roleName,result.data.response.allUsers,result.data.response.userInformation);
+                this.props.setIDToken(r.getIdToken().getJwtToken(), this.usernameInput.value, this.props.rememberMe ? this.passwordInput.value : null);
+               // this.props.setUserInfo(result.data.response.userInformation, result.data.response.companyInformation, result.data.response.isAuroraSuperuser, result.response.productRoles)
+
+                if(this.props.currentPage === ''){
+                    this.props.history.push("/dashboard");
+                }
+                else{
+                    
+                    this.props.history.push(this.props.currentPage);
+                }
 
             })
             .catch(e => { throw (e) })
-
     }
 
     //new password required (first time login)
@@ -99,19 +127,42 @@ class Signin extends Component{
         });
     }
 
+    //for recovering password
+    handleChangeUsername = (e) => this.setState({ forgotpwd_username: e.target.value });
+
+    handleChangeNewPassword = (e) => this.setState({ forgotpwd_password: e.target.value });
+
+    //save new password (recovering password)
+    handleSend = () => {
+        forgotpassword(this.state.forgotpwd_username, (err, result) => {
+            if (err) {
+                this.setState({ forgotpwd_user_ok: false }, this.f.test())
+                alert(err);
+                return
+            }
+            if (typeof result !== "undefined")
+                alert(result.message)
+            this.setState({ forgotpwd_user_ok: true }, this.f.test())
+
+        })
+    }
+
+    rememberMe = (e) => this.props.setRememberMe(e.target.checked)
+
+
     //new password required modal
     requireNewPassword = () => this.n.handleShow();
 
     //recovering password modal
-    //forgotPassword = () => this.f.handleShow();
+    forgotPassword = () => this.f.handleShow();
 
     render = () => {
         let CloseModal = () => this.setState({ forgotPassword: false });
         let n = (<NewPwdModal handleChangePassword={this.handleChangePassword} handleChangeConfirmPassword={this.handleChangeConfirmPassword} handleSave={this.handleSave} ref={ref => this.n = ref} />);
-        // let f = (<ForgotPassword handleChangeNewPassword={this.handleChangeNewPassword} handleSaveChangePassword={this.handleSaveChangePassword} handleSend={this.handleSend} handleChangeUsername={this.handleChangeUsername} forgotpwd_user_ok={this.state.forgotpwd_user_ok} ref={ref => this.f = ref} />);
+        let f = (<ForgotPassword handleChangeNewPassword={this.handleChangeNewPassword} handleSaveChangePassword={this.handleSaveChangePassword} handleSend={this.handleSend} handleChangeUsername={this.handleChangeUsername} forgotpwd_user_ok={this.state.forgotpwd_user_ok} ref={ref => this.f = ref} />);
         return (
         <div>
-            <div id="login_modal">{n}</div>
+            <div id="login_modal">{n}{f}</div>
             <div id="login-background" />
             <div id="login-form"></div>
             
@@ -172,8 +223,10 @@ class Signin extends Component{
                         <Form.Label id="login-title" className="text-uppercase">Sign in to AURORA</Form.Label>
                         <br/>
                         <p className="text-uppercase"><small>Enter your detail below</small></p>
-                        
-                        <Form.Group className="login-inputbox">
+                        {this.state.error && (
+                            <div className='alert alert-danger'>Invalid Username/Email or Password</div>
+                        )}
+                        <Form.Group className="login-inputbox text-left">
                             <Form.Label>Username</Form.Label>
                             <Form.Control type="text"
                                 placeholder="Username"
@@ -186,9 +239,9 @@ class Signin extends Component{
 
                         <Form.Group className="login-inputbox">
                             <Row>
-                                <Col><Form.Label>Password</Form.Label></Col>
+                                <Col  className="text-left"><Form.Label>Password</Form.Label></Col>
                                 <Col>
-                                    <button type="button" className="btn btn-link color-green" onClick={() => this.setState({ forgotPassword: true })}>Forgot Password?</button>
+                                    <button type="button" className="btn btn-link color-green" onClick={this.forgotPassword}>Forgot Password?</button>
                                 </Col>
                             </Row>
                             
@@ -214,7 +267,7 @@ class Signin extends Component{
                 </Col>
             </Row>
 
-
+{/* 
             <Modal
             show={this.state.forgotPassword}
             onHide={CloseModal}
@@ -248,7 +301,7 @@ class Signin extends Component{
                 <Button onClick={CloseModal}>Close</Button>
                 <Button onClick={this.checkLogin} >Send</Button>
             </Modal.Footer>
-            </Modal>
+            </Modal> */}
 
             
         </div>
@@ -270,7 +323,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setUserInfo: (userInfo) => dispatch(setUserInfo(userInfo)),
+    setUserInfo: (productRoles, productName, roleName, allUsers, userInformation) => dispatch(setUserInfo(productRoles, productName, roleName, allUsers, userInformation)),
     setIDToken: (idToken, username, password) => dispatch(setIDToken(idToken, username, password)),
     setRememberMe: (rememberMe) => dispatch(setRememberMe(rememberMe))
 });

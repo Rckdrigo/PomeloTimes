@@ -2,6 +2,6 @@ export function setIDToken(idToken, username, password) { return { type: 'SET_CR
 
 export function setRememberMe(rememberMe) { return { type: 'REMEMBER_ME', rememberMe: rememberMe } }
 
-export function setUserInfo(userInfo) { return { type: 'SET_USER_INFO', userInfo: userInfo } }
+export function setUserInfo(productRoles, productName, roleName, allUsers, userInformation ) { return { type: 'SET_USER_INFO', productRoles: productRoles, productName:productName, roleName:roleName, allUsers: allUsers, userInformation: userInformation } }
 
 export function changePage(currentPage) { return { type: 'CHANGE_PAGE', currentPage: currentPage } }

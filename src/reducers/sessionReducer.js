@@ -6,9 +6,12 @@ var initialState = {
     userId: '',
     dbName: '',
     companyName: '',
-    isApprover: '',
+    currentPage: '',
+    productRoles: '',
+    productName: '',
+    roleName:'',
+    allUsers:''
 
-    currentPage: ''
 }
 
 function sessionReducer(state = initialState, action) {
@@ -31,10 +34,12 @@ function sessionReducer(state = initialState, action) {
             console.log(action)
             return {
                 ...state,
-                idUser: action.idUser,
-                dbName: action.dbName,
-                companyName: action.companyName,
-                isApprover: action.isApprover
+                productRoles: action.productRoles,
+                productName: action.productName,
+                roleName: action.roleName,
+                allUsers: action.allUsers,
+                userInformation: action.userInformation
+
             }     
 
         case 'CHANGE_PAGE':

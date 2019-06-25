@@ -40,5 +40,9 @@ ReactDOM.render(
 //     </Provider>
 // 	, document.getElementById('root'));
 
+//fetch("http://localhost:3000/user_manager/getUsers").then(e => console.log(e))
+
+// ReactDOM.render(<Main saveCookie={saveCookie} loadCookie={loadCookie} />, document.getElementById('root'));
+
 // // If you want your app to work offline and load faster, you can change
 // // unregister() to register() below. Note this comes with some pitfalls.
