@@ -12,7 +12,11 @@ class App extends Component {
             <BrowserRouter>
                 <div className="App">
                     <Switch>
-                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/dashboard" render={
+                            (props) => <Dashboard {...props} 
+                                saveCookie={this.props.saveCookie}
+                                loadCookie={this.props.loadCookie} /> 
+                        } />
                         <Route path="/" component={Signin} />
                         <Route component={Signin} />
                     </Switch>

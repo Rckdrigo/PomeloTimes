@@ -4,8 +4,14 @@ import { connect } from 'react-redux';
 class DashApp extends Component {
   state = {
       collapsed: false,
-
   };
+
+  componentDidMount = () => {
+      console.log(this.props)
+      
+      this.props.saveCookie('username', this.props.username);
+      this.props.saveCookie('idToken', this.props.idToken);
+  }
 
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -19,6 +25,11 @@ class DashApp extends Component {
           <h1>Dashboard</h1>
           <h2>{this.props.productName}</h2>
           <h2>{this.props.userInformation.username}</h2>
+
+          <button> <a href="http://localhost:3006/" target="_self" 
+            onClick = {() => this.props.saveCookie('role', this.props.roleName)}>
+            MEDIA SUITE 
+        </a></button>
         </div>
         
       );
@@ -26,14 +37,16 @@ class DashApp extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let { productRoles, productName, roleName, allUsers, userInformation} = state.sessionReducer
+  let { productRoles, productName, roleName, allUsers, userInformation,username,idToken} = state.sessionReducer
 
   return {
     productRoles: productRoles,
     productName: productName,
     roleName:roleName,
     allUsers: allUsers,
-    userInformation: userInformation
+    userInformation: userInformation,
+    username: username,
+    idToken: idToken,
   }
 }
 
