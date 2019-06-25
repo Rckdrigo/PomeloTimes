@@ -10,7 +10,9 @@ class ForgotPwd extends Component {
         forgotpwd_username: "",
         forgotpwd_password: "",
         forgotpwd_user_ok: false,
-        codemistmatch: false
+        codemistmatch: false,
+        usernotfound: false,
+        LimitExceeded: false
     }
     handleSend = () =>{
         console.log("hello")
@@ -19,7 +21,7 @@ class ForgotPwd extends Component {
                 console.log(err.code);
                 if(err.code === 'LimitExceededException'){
                     this.showVerificationModal(false)
-                    document.getElementById('usernotfound').innerHTML = 'Please try again later.'
+                    this.setState({ LimitExceeded: true })
                 }else if(err.code === 'CodeMismatchException'){
                     this.v.handleShow(false);
                 }else{
@@ -40,7 +42,7 @@ class ForgotPwd extends Component {
     showVerificationModal = (val) =>{
         console.log(val)
         if(val === false){
-             document.getElementById('usernotfound').style.visibility = "visible";
+            this.setState({ usernotfound: true })
         }else{
             this.v.handleShow(true);
             this.handleClose();
@@ -65,6 +67,8 @@ class ForgotPwd extends Component {
 
     handleClose = () => {
         this.setState({ show: false});
+        this.setState({ usernotfound: false });
+        this.setState({ LimitExceeded: false })
     }
 
     handleShow = () => {
@@ -96,7 +100,12 @@ class ForgotPwd extends Component {
                                         <FormControl.Feedback />
                             </FormGroup>
                         </form>
-                        <div id="usernotfound">User not found</div>
+                        {this.state.usernotfound && (
+                            <div className='text-danger'>Invalid Username/Email or Password</div>
+                        )}
+                        {this.state.LimitExceeded && (
+                            <div className='text-danger'>Please try again later.</div>
+                        )}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleClose} id='pwd_button_sec'>Close</Button>
