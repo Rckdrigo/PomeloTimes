@@ -3,13 +3,13 @@ service: webUserManagment
 stage: dev
 region: ap-southeast-1
 stack: aurora-webUserManagment-stack-dev
-resources: 23
+resources: 25
 api keys:
   None
 endpoints:
-  GET - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
-  POST - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user
-  DELETE - https://t4hbgyvdo6.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
+  GET - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
+  POST - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user
+  DELETE - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
 functions:
   webUser: webUserManagment-dev-webUser
   createSuperUser: webUserManagment-dev-createSuperUser

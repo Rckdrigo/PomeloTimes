@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
+const config = require('../../config/config.json')
+
 class DashApp extends Component {
   state = {
       collapsed: false,
@@ -10,7 +12,7 @@ class DashApp extends Component {
       console.log(this.props)
       
       this.props.saveCookie('username', this.props.username);
-      this.props.saveCookie('idToken', this.props.idToken);
+    //   this.props.saveCookie('idToken', this.props.idToken);
   }
 
   onCollapse = collapsed => {
@@ -26,7 +28,7 @@ class DashApp extends Component {
           <h2>{this.props.productName}</h2>
           <h2>{this.props.userInformation.username}</h2>
 
-          <button> <a href="http://localhost:3006/" target="_self" 
+          <button> <a href={ config.products[0]['url'] } target="_self" 
             onClick = {() => this.props.saveCookie('role', this.props.roleName)}>
             MEDIA SUITE 
         </a></button>

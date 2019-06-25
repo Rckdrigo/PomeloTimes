@@ -4,7 +4,12 @@
 	"AWS_ACCESS_KEY": "AKIAIHWILIGOTKRTC7AA",
     "AWS_SECRET_KEY": "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",
     
-    "UserPoolId": "ap-southeast-1_3iG5u2Uow",
-    "ClientId": "6kngdtjr2kprbc8tv050s8dv5q",
-    "IdentityPoolId": "ap-southeast-1:67ee9f0d-8e4d-4894-bb96-60e48203a905"
+    "UserPoolId": "ap-southeast-1_ieJqiQwnj",
+    "ClientId": "28sp74svheb7udbnthif08og3l",
+    "IdentityPoolId": "ap-southeast-1:bfa0e37a-916c-40b5-bcee-654f044e7092",
+
+    "aurora_url":"http://test.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com",
+    "products":[
+        {"name" : "media-suite", "url" : "http://test.mediasuite.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com"  }
+    ]
 }

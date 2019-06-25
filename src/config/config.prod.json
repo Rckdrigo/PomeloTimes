@@ -6,5 +6,10 @@
     
     "UserPoolId": "ap-southeast-1_BIVMz0ZNo",
     "ClientId": "7cr01l8u70qt9gekltualiuq92",
-    "IdentityPoolId": "ap-southeast-1:b7235ea1-7feb-4ebc-95c9-b6f6ec6ea47c"
+    "IdentityPoolId": "ap-southeast-1:b7235ea1-7feb-4ebc-95c9-b6f6ec6ea47c",
+
+    "aurora_url":"http://auroramedia.live",
+    "products":[
+        {"name" : "media-suite", "url" : "http://mediasuite.auroramedia.live"  }
+    ]
 }
