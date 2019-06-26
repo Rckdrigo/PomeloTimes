@@ -1,0 +1,17 @@
+Service Information
+service: webUserManagment
+stage: test
+region: ap-southeast-1
+stack: aurora-webUserManagment-stack-test
+resources: 25
+api keys:
+  None
+endpoints:
+  GET - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user/{username}
+  POST - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user
+  DELETE - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user/{username}
+functions:
+  webUser: webUserManagment-test-webUser
+  createSuperUser: webUserManagment-test-createSuperUser
+layers:
+  None

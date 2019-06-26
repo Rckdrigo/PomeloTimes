@@ -16,17 +16,25 @@ get_domain(){
 }
 
 deploy () {  
+
     if jest src --passWithNoTests; then
         echo -e "--Deploying web to $1--"
-        echo "Test passed."
+        echo -e "\nTest passed."
+
+        cp ./config/config.$1.js ./public/config.js
+        cp ./src/config/config.$1.json ./src/config/config.json 
+        cp ./src/api/api.$1.json ./src/api/api.local.json
 
         react-scripts build
         if [ "$1" = "test" ]; then
             aws s3 cp --recursive ./build s3://$1.$2
         else
-            aws s3 cp --recursive ./build s3://$2
+            aws s3 cp --recursive ./build s3://$2 
         fi
         
+        cp ./config/config.dev.js ./public/config.js
+        cp ./src/config/config.dev.json ./src/config/config.json 
+        cp ./src/api/api.dev.json ./src/api/api.local.json
         
     else 
         error_exit "Test failed. Canceling build."
