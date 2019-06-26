@@ -1,6 +1,6 @@
 var config = {
-    "aurora_url": "http://test.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com",
+    "aurora_url": "http://localhost:3001",
     "product_url" : [
-        "http://test.mediasuite.auroramedia.live.s3-website-ap-southeast-1.amazonaws.com",
+        "http://localhost:3006"
     ]
 }
