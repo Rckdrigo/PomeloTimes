@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signOut } from '../../cognito/cognito';
+import { setIDToken, changePage } from '../../actions/sessionActions'
 import './sidebar.css';
 import dashboard_white from '../../img/dashboard_white.svg';
 import dashboard_green from '../../img/dashboard_green.svg';
@@ -16,6 +19,22 @@ class Sidebar extends Component {
     state = {
         collapse: false,
         activeMenu: ['true', 'false', 'false', 'false'],
+    }
+
+    componentDidMount = () => {    
+        if (this.props.currentPage === '')
+            this.props.changePage('/dashboard');
+    
+        this.SignOut = this.SignOut.bind(this);
+        
+        if (this.props.idToken === '' || this.props.idToken === null || this.props.idToken === undefined){
+            this.props.history.push("/")
+              console.log("USER NOT FOUND");
+          }else{
+            console.log("USER LOGIN");
+          }
+    
+        
     }
 
     clickBurgerBar() {
@@ -48,6 +67,20 @@ class Sidebar extends Component {
             })
           });
 
+    }
+
+    SignOut = (e) => {
+        e.preventDefault();
+        if (!this.props.rememberMe){
+            this.props.setIDToken('', '', '');
+            console.log("NOT REMEMBER ME"+this.props.rememberMe)
+        }else{
+            this.props.setIDToken('', this.props.username, null);
+        }
+        this.props.changePage('')
+        this.props.history.push('/');
+        signOut();
+        
     }
 
     render() {
@@ -171,7 +204,10 @@ class Sidebar extends Component {
                         <td className="td-expand">
                             <div className="logout">
                                 <hr className="hr-expand" />
-                                <img src={logout_white} alt="logout"/> Log Out
+                                <button type="button" className="btn" onClick={e => this.SignOut(e)}>
+                                    <img src={logout_white} alt="logout"/> 
+                                    <span className="text-white pl-2">Log Out</span>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -295,5 +331,26 @@ class Sidebar extends Component {
 }
 
 
- 
-export default Sidebar;
+const mapStateToProps = (state) => {
+    let { productRoles, productName, roleName, allUsers, userInformation,username,idToken} = state.sessionReducer
+    let { currentPage, rememberMe } = state.sessionReducer
+  
+    return {
+      productRoles: productRoles,
+      productName: productName,
+      roleName:roleName,
+      allUsers: allUsers,
+      userInformation: userInformation,
+      username: username,
+      idToken: idToken,
+      rememberMe: rememberMe,
+      currentPage: currentPage,
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => ({
+    setIDToken: (idToken, username, password) => dispatch(setIDToken(idToken, username, password)),
+    changePage: currentPage => dispatch(changePage(currentPage))
+  });
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
