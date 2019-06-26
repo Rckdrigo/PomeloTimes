@@ -33,7 +33,6 @@ class Signin extends Component{
         console.log(this)
 
         if(this.props.username !== "" && this.props.rememberMe){
-            console.log("THIS IS USERNAME ", this.props.username)
 
             this.usernameInput.value = this.props.username;
             this.passwordInput.value = this.props.password;
@@ -82,7 +81,7 @@ class Signin extends Component{
     checkLogin = (e) => {
         e.preventDefault();
 
-        console.log("test"+ this.usernameInput.value);
+        console.log("User Input"+ this.usernameInput.value);
         this.authUser (this.usernameInput.value, this.passwordInput.value);
         // authenticateUser(this.usernameInput.value, this.passwordInput.value, (err, result, require, cognitoUser) => {
         //     if (err) {

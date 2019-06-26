@@ -10,7 +10,7 @@ var initialState = {
     productRoles: '',
     productName: '',
     roleName:'',
-    allUsers:''
+    allUsers:'',
 
 }
 
