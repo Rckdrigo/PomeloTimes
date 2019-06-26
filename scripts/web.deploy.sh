@@ -21,6 +21,8 @@ deploy () {
         echo -e "--Deploying web to $1--"
         echo -e "\nTest passed."
 
+        npm run ms:list $1
+
         cp ./config/config.$1.js ./public/config.js
         cp ./src/config/config.$1.json ./src/config/config.json 
         cp ./src/api/api.$1.json ./src/api/api.local.json

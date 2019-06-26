@@ -1,0 +1,4 @@
+dev:
+	GET - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}
+	POST - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user
+	DELETE - https://1iyaq4k47f.execute-api.ap-southeast-1.amazonaws.com/dev/webUserManagment/user/{username}

@@ -1,0 +1,4 @@
+test:
+	GET - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user/{username}
+	POST - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user
+	DELETE - https://hieczvd5rd.execute-api.ap-southeast-1.amazonaws.com/test/webUserManagment/user/{username}
