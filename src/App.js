@@ -1,23 +1,30 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+import Signin from './components/signin.js'
+import Dashboard from './components/dashBoard/dashboard.js';
+import Main from './components/main/main.js';
 
-import CookieReader from './CookieReader'
-
-import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 class App extends Component {
 
     render = () => {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1>Welcome to Aurora!</h1>
-                    <h1>Hi</h1>
-                    <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/>
-                </header>
-            </div>
+            <BrowserRouter>
+                <div className="App">
+                    <Switch>
+                        <Route path="/dashboard" render={
+                            (props) => <Dashboard {...props} 
+                                saveCookie={this.props.saveCookie}
+                                loadCookie={this.props.loadCookie} /> 
+                        } />
+                        <Route path="/" component={Signin} />
+                        <Route component={Signin} />
+                    </Switch>
+                </div>
+            </BrowserRouter>
         );
     }
 }
 
+{/* <CookieReader saveCookie={this.props.saveCookie} loadCookie={this.props.loadCookie}/> */}
 export default App;

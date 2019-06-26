@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css?family=Share+Tech');
+
+.sidebar-collapse {
+    font-family: 'Share Tech', sans-serif;
+    height: 1080px;
+    width: 61px;
+    position: fixed;
+    top: 0;
+    background-color: #040F0B;
+    overflow-x: hidden;
+    padding-top: 16px;
+    z-index: 1;
+    text-align: center;
+    transition: 300ms linear;
+    background-image: url("../../img/aurora_bg.png");
+    background-size: 245px 1080px;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+}
+
+.sidebar-expand {
+    font-family: 'Share Tech', sans-serif;
+    height: 1080px;
+    width: 245px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    background-color: #040F0B;
+    overflow-x: hidden;
+    padding-top: 16px;
+    text-align: center;
+    transition: 300ms linear;
+    background-image: url("../../img/aurora_bg.png");
+    background-position: right bottom;
+    background-repeat: no-repeat;
+}
+
+.auroraName {
+    font-size: 36px;
+    color: #FFFFFF;
+    text-align: center;
+    width: 88%;
+    /* animation: Slide_Up 300ms ease */
+
+}
+
+.auroraName-collapse {
+    font-size: 36px;
+    color: #FFFFFF;
+    text-align: left;
+    margin-left: 5px;
+    width: 88%;
+    transition: 300ms linear;
+}
+
+.burgerBar {
+    width: 21.4px;
+    height: 2px;
+    background-color: #FFFFFF;
+    margin: 6px 0;
+    transition: 300ms ease-in-out;
+}
+
+.burgerBar-collapse {
+    width: 10px;
+    height: 2px;
+    background-color: #FFFFFF;
+    margin: 6px 0;
+    transition: 300ms ease-in-out;
+}
+
+.auroraVersion {
+    font-size: 13px;
+    color: #41C770;
+    text-align: center;
+}
+
+.profileName{
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.imgCircle {
+    height: 72px;
+    width: 72px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    border: 3px solid #41C770;
+    text-align: center;
+    margin: 10px;
+    transition: 300ms linear;
+}
+
+.imgCircle-collapse {
+    height: 38px;
+    width: 38px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    border: 3px solid #41C770;
+    margin: 5px;
+    margin-top: 40px;
+    transition: 300ms linear;
+}
+
+.topMenu {
+    color: #FFFFFF;
+    font-size: 14px;
+    text-align: left;
+}
+
+.topMenu-collapse {
+    color: #FFFFFF;
+    font-size: 14px;
+    text-align: left;
+    
+}
+
+.productMenu {
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
+.logout-collapse {
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-top:535px;
+}
+
+.logout {
+    color: #FFFFFF;
+    font-size: 14px;
+    /* margin-top: 500px; */
+}
+
+.hr-expand {
+    background-color: #707070;
+    width: 200px;
+    /* transition: 300ms linear; */
+}
+
+.hr-collapse {
+    background-color: #707070;
+    width: 40px;
+    /* transition: 300ms linear; */
+}
+
+.td-expand {
+    width: 245px;
+    transition: 300ms linear;
+}
+
+.td-collapse {
+    width: 61px;
+    transition: 300ms linear;
+}
+
+.active {
+    background: rgba(255,255,255, 0.2);
+    box-shadow: inset 5px 0px 0px 0px  #41C770;
+  }
+
+a:hover,  a:visited,  a:link,  a:active {
+    text-decoration: none!important;
+}
+
+  @keyframes Slide_Up {
+      0% {
+          transform: translateY(250px);
+      }
+      100% {
+        transform: translateY(0px);
+    }
+  }

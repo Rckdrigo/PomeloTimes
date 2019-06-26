@@ -299,10 +299,27 @@
 
 // ip_local()
 
-CrossStorageHub.init([
-    { origin: /.*192.168.1.128:300\d$/, allow: ['get'] },
-    { origin: /.*192.168.1.128:3001$/, allow: ['get', 'set', 'del'] },
+// console.log(config)
 
-    { origin: /.*localhost:300\d$/, allow: ['get'] },
-    { origin: /.*localhost:3001$/, allow: ['get', 'set', 'del'] }
+var products = []
+var hub = { origin: new RegExp(config.aurora_url), allow: ['get', 'set', 'del'] };
+
+config.product_url.map(p =>  products.push({ origin: new RegExp(p), allow: ['get'] }))
+
+console.log([
+    hub,
+    ...products
+])
+
+// CrossStorageHub.init([
+//     // { origin: /.*192.168.1.128:300\d$/, allow: ['get'] },
+//     // { origin: /.*192.168.1.128:3006$/, allow: ['get', 'set', 'del'] },
+
+//     { origin: /.*localhost:300\d$/, allow: ['get'] },
+//     { origin: /.*localhost:3001$/, allow: ['get', 'set', 'del'] }
+// ]);
+
+CrossStorageHub.init([
+    hub,
+    ...products
 ]);

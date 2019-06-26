@@ -8,6 +8,11 @@ coverage
 .serverless
 coverage/*
 logs/*
+<<<<<<< HEAD
 build/*
 server/*
 src/*
+=======
+
+build/*
+>>>>>>> Aurora_framwork_Frontend
