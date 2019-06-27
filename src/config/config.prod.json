@@ -1,0 +1,11 @@
+{
+    "environment":"prod",
+	"BUCKET": "",
+	"AWS_ACCESS_KEY": "",
+    "AWS_SECRET_KEY": "",
+    
+    "UserPoolId": "",
+    "ClientId": "",
+    "IdentityPoolId": "",
+
+}

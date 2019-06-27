@@ -5,15 +5,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 var CrossStorageClient = require('cross-storage').CrossStorageClient;
-var storage = new CrossStorageClient('http://192.168.1.128:3001/hub.html');
+var storage = new CrossStorageClient('http://localhost:3001/hub.html');
 
 var saveCookie = (key, value) => {
     var setKey = function () { return storage.set(key, value); };
     storage.onConnect().then(setKey).catch(e => {throw e});
 }
-
-
-
 async function loadCookie(key) {
     var getKey = function () { return storage.get(key); };
     var value;
