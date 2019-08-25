@@ -20,19 +20,11 @@
         "redux-persist": "^5.10.0"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "jest && react-scripts build",
+        "open": "start http://localhost:5000",
+        "start": "npm i -f && react-scripts start",
+        "deploy": "npm install -g serve && npm i -f && jest && react-scripts build  && start http://localhost:5000 && serve -s build",
         "eject": "react-scripts eject",
-        "test": "jest",
-        "init": "bash scripts/init.sh",
-        "aws:init": "bash scripts/aws.init.sh",
-        "ms:create": "bash scripts/ms.create.sh",
-        "ms:deploy": "bash scripts/ms.deploy.sh",
-        "ms:pack": "bash scripts/ms.pack.sh",
-        "ms:remove": "bash scripts/ms.remove.sh",
-        "ms:offline": "bash scripts/ms.offline.sh",
-        "ms:list": "bash scripts/ms.list.sh",
-        "web:deploy": "bash scripts/web.deploy.sh"
+        "test": "jest"
     },
     "eslintConfig": {
         "extends": "react-app"
