@@ -1,0 +1,5 @@
+{
+    "getMostViewed" : "https://api.nytimes.com/svc/mostpopular/v2/viewed/{period}.json",
+    "getArticle":"https://api.nytimes.com/svc/search/v2/articlesearch.json",
+    "getTopStoriesByCategory":"https://api.nytimes.com/svc/topstories/v2/{category}.json"
+}

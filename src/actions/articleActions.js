@@ -1,0 +1,2 @@
+export function setTopArticles(topArticles,isCategory) { return { type: 'SET_TOP_ARTICLES', topArticles, isCategory } }
+export function selectCategoryArticle(article) { return { type: 'SELECT_ARTICLE', article } }
